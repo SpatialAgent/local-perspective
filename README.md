@@ -8,13 +8,23 @@ Local Perspective is a configurable template for highlighting features from a we
 [View it live] (http://coolmaps.esri.com/templates/LocalPerspective/?cycleColors=1)
 
 #Features
+
+The template can be configured using the following options:
+
 Map: Choose the web map used in your application.
+
 Text Title: The application name displayed in the application header.
+
 Logo URL: The URL location for the application icon (logo).
-Color: Choose either a single color scheme for the application, OR to cycle a unique color scheme for each layer.
+
+Color: Choose either a single color scheme for the application or cycle through a unique color scheme for each layer.
+
 Show Demographics: Choose this option to include demographic information about the selected location.
+
 Show Lifestyle: Choose this option to include lifestyle information about the selected location based on Esri's tapestry segmentation neighborhood profile data.
+
 Show Weather: Choose this option to include weather conditions for the selected location.
+
 Enable Routing Directions: Choose this option to allow users to generate turn by turn directions. *
 *requires organization account.
 
