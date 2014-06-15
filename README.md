@@ -19,9 +19,9 @@ Logo URL: The URL location for the application icon (logo).
 
 Color: Choose either a single color scheme for the application or cycle through a unique color scheme for each layer.
 
-Show Demographics: Choose this option to include demographic information about the selected location.
+Show US Demographics: Choose this option to include demographic information about the selected location.
 
-Show Lifestyle: Choose this option to include lifestyle information about the selected location based on Esri's tapestry segmentation neighborhood profile data.
+Show US Lifestyle: Choose this option to include lifestyle information about the selected location based on Esri's tapestry segmentation neighborhood profile data.
 
 Show Weather: Choose this option to include weather conditions for the selected location.
 
