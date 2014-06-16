@@ -117,7 +117,7 @@ a, a:hover, a:visited{
 
 .esriSimpleSliderTL {
 	top: 5px;
-	left: 5px;
+	left: 10px;
 	border: none;
 }
 
@@ -637,7 +637,7 @@ a, a:hover, a:visited{
 
 #panelTop {
 	position: fixed;
-	left: 35px;
+	left: 40px;
 	top: 5px;
 	color: #ffffff;
 	font-family: HelveticaNeueUltraLight;
@@ -751,7 +751,7 @@ a, a:hover, a:visited{
 	}
 	
 	#panelTop {
-		left: 5px;
+		left: 10px;
 	}
 	
 	#panelText {
@@ -769,7 +769,7 @@ a, a:hover, a:visited{
 	}
 	
 	#panelTop {
-		left: 5px;
+		left: 10px;
 	}
 	
 	#panelLogo {
@@ -792,7 +792,7 @@ a, a:hover, a:visited{
 	}
 	
 	#panelTop {
-		left: 5px;
+		left: 10px;
 	}
 	
 	#panelLogo {
