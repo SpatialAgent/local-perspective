@@ -680,7 +680,8 @@ a, a:hover, a:visited{
 	margin: 0;
 	width: 227px;
 	height: 30px;
-	overflow: hidden;
+	color: #6e6e6e;
+	/*overflow: hidden;*/
 }
 
 

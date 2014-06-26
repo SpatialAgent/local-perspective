@@ -192,7 +192,9 @@ define([
 
          // geocoder
          var geocoder = new Geocoder({
-            map : this.map
+            map : this.map,
+            url: this.config.helperServices.geocode[0].url,
+            autoComplete : true
          }, "panelGeocoder");
          on(geocoder, "find-results", lang.hitch(this, this._geocoderResults));
          on(geocoder, "clear", lang.hitch(this, this._geocoderClear));
