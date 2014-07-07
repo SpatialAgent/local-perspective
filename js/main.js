@@ -197,6 +197,7 @@ define([
             autoComplete : true
          }, "panelGeocoder");
          on(geocoder, "find-results", lang.hitch(this, this._geocoderResults));
+         on(geocoder, "select", lang.hitch(this, this._geocoderSelect));
          on(geocoder, "clear", lang.hitch(this, this._geocoderClear));
          geocoder.startup();
          
@@ -220,6 +221,13 @@ define([
             var geom = result.feature.geometry;
             this.ui.setLocation(geom);
          }
+      },
+      
+      // geocoder select
+      _geocoderSelect : function(obj) {
+         var result = obj.result;
+         var geom = result.feature.geometry;
+         this.ui.setLocation(geom);
       },
       
       // geocoder clear
