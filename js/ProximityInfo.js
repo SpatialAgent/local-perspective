@@ -146,22 +146,18 @@ define([
                var num = i+1;
                
                var rec = domConstruct.create("div", {
-                  //class: "recProximity"
                }, content);
                domClass.add(rec, 'recProximity');
                var recLeftNum = domConstruct.create("div", {
-                  //class: "recLeftNum"
                }, rec);
                 domClass.add(recLeftNum, 'recLeftNum');
                var recNum = domConstruct.create("div", {
-                  //class: "recNum",
                   style: "background-color:" + this.pageObj.color,
                   innerHTML: num
                }, recLeftNum);
                domClass.add(recNum, 'recNum');
-               on(recNum, "click", lang.hitch(this, this.zoomToLocation, pt));
+               on(recNum, "click", lang.hitch(this, this.zoomToLocation, gra, pt));
                var recInfo = domConstruct.create("div", {
-                  //class: "recInfo"
                }, rec);
                 domClass.add(recInfo, 'recInfo');
                var infoDist = "";
@@ -169,10 +165,9 @@ define([
                   infoDist += "<img src='images/car.png' /> ";
                infoDist  += Math.round(dist*100)/100 + " " + this.config.distanceUnits.toUpperCase() + "<br/>";
                var recDistance = domConstruct.create("span", {
-                  //class: "recDistance",
                   innerHTML: infoDist
                }, recInfo);
-                domClass.add(recDistance, 'recDistance');
+               domClass.add(recDistance, 'recDistance');
                if (geom.type == "point")
                   on(recDistance, "click", lang.hitch(this, this.routeToLocation, pt));
                var recInfoText = domConstruct.create("span", {
@@ -255,7 +250,11 @@ define([
       },
       
       // zoom to location
-      zoomToLocation: function(loc) {
+      zoomToLocation: function(gra, loc) {
+         //var loc = gra.geometry;
+         var c = gra.getContent();
+         this.map.infoWindow.setContent(c);
+         this.map.infoWindow.show(loc);
          this.map.centerAndZoom(loc, this.config.defaultZoomLevel || 14);
       },
       

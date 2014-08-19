@@ -35,7 +35,7 @@ define([
     "esri/dijit/HomeButton",
     "esri/dijit/Geocoder",
     "esri/dijit/LocateButton",
-    "esri/dijit/Legend"
+    "esri/urlUtils"
 ], function (
     ready,
     Color,
@@ -56,7 +56,7 @@ define([
     HomeButton,
     Geocoder,
     LocateButton,
-    Legend
+    urlUtils
 ) {
    
    return declare(null, {
@@ -84,6 +84,15 @@ define([
             this.config = config;
             this.setColor();
             this.setProtocolHandler();
+            // proxy rules
+            urlUtils.addProxyRule({
+               urlPrefix: "route.arcgis.com",
+               proxyUrl: this.config.proxyurl
+            });
+            urlUtils.addProxyRule({
+               urlPrefix: "traffic.arcgis.com",
+               proxyUrl: this.config.proxyurl
+            });
             // document ready
             ready(lang.hitch(this, function() {
                //supply either the webmap id or, if available, the item info
@@ -211,7 +220,8 @@ define([
          this._updateTheme();
          
          // set default location
-         this._setDefaultLocation();
+         if (this.config.defaultToCenter)
+            this._setDefaultLocation();
       },
       
       // geocoder results
