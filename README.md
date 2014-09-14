@@ -19,11 +19,9 @@ Logo URL: The URL location for the application icon (logo).
 
 Color: Choose either a single color scheme for the application or cycle through a unique color scheme for each layer.
 
-Use map center as default location: Option to start the app with the map center as teh default location.
+Show Demographics: Choose this option to include demographic information about the selected location.
 
-Show US Demographics: Choose this option to include demographic information about the selected location.
-
-Show US Lifestyle: Choose this option to include lifestyle information about the selected location based on Esri's tapestry segmentation neighborhood profile data.
+Show Lifestyle: Choose this option to include lifestyle information about the selected location based on Esri's tapestry segmentation neighborhood profile data.
 
 Show Weather: Choose this option to include weather conditions for the selected location.
 
@@ -34,9 +32,8 @@ Enable Routing Directions: Choose this option to allow users to generate turn by
 
 1. Download and unzip the .zip file or clone the repo. 
 2. Web-enable the directory
-3. To specify the fields displayed in the results list, configure the pop-up attributes in the web map and reorder the fields. The first three fields are displayed.
-4. Access the .html page 
-5. See the readme.html page for more details. 
+3. Access the .html page 
+4. See the readme.html page for more details. 
 
 
 #Requirements
