@@ -84,7 +84,8 @@ define({
         "extent",
         "color",
         "cycleColors",
-        "showDirections"
+        "showDirections",
+        "defaultDistance"
     ],
     "helperServices": {
         "geometry": {

@@ -276,6 +276,7 @@ a, a:hover, a:visited{
 	border-radius: 2px;
 	-moz-border-radius: 2px;
 	height: 2px;
+	border: transparent;
 }
 
 .esriStopsContainer {
@@ -741,7 +742,6 @@ a, a:hover, a:visited{
 	
 	#panelTop {
 		left: 10px;
-		max-width: 
 	}
 	
 	#panelLogo {
