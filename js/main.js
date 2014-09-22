@@ -156,6 +156,7 @@ define([
          arcgisUtils.createMap(itemInfo, "mapDiv", {
             mapOptions : {
             },
+            editable: false,
             bingMapsKey : this.config.bingKey
          }).then(lang.hitch(this, function(response) {
 
