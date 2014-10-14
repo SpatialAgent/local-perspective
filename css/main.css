@@ -721,6 +721,10 @@ a, a:hover, a:visited{
 
 @media only screen and (max-width: 700px) {
 	
+	html, body {
+		overflow-x: hidden!important;
+	}
+	
 	.esriSimpleSlider {
 		display: none;
 	}
@@ -741,6 +745,10 @@ a, a:hover, a:visited{
 
 @media only screen and (max-width: 500px) {
 	
+	html, body {
+		/*overflow-x: hidden;*/
+	}
+	
 	.esriSimpleSlider {
 		display: none;
 	}
@@ -759,7 +767,7 @@ a, a:hover, a:visited{
 	
 	#panelContent {
 		position: absolute;
-		right: -100%;
+		left: -100%;
 		top: 0px;
 		width: 100%;
 		height: 100%;
@@ -767,14 +775,33 @@ a, a:hover, a:visited{
 		background-color: rgba(0,0,0,0.5);
 	}
 	
+	.pageblank {
+		width: 100%;
+		height: 100%;
+	}
+	
+	.pageMenu {
+		position: relative;
+		width: 30px;
+		height: 30px;
+		left: 200%;
+		margin-left: -50px;
+		top: 5px;
+		text-align: center;
+		padding: 5px;
+		cursor: pointer;
+	}
+	
 	.page {
 		position: relative;
 		width: 100%;
-		margin-left: -100%;
+		margin-left: 100%;
 		height: 100%;
 		display: block;
 		background-color: rgba(0,0,0,0.15);
 	}
+	
+	
 
 	.pageContent {
 		top: 60px;
