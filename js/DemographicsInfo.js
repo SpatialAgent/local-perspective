@@ -48,7 +48,8 @@ define([
          this.container.innerHTML = "<br/><br/><img src='images/ajax-loader.gif'/>";
          this.pageObj = pageObj;
          
-         var queryTask = new QueryTask(this.config.demographicsURL);
+         var url = this.config.demographicsURL + "?ts=" + new Date().getTime();
+         var queryTask = new QueryTask(url);
          var query = new Query();
          var outStats = [];
          for (var i=0; i<this.fields.length; i++) {
@@ -74,6 +75,7 @@ define([
          this.container.innerHTML = "";
          
          var content = domConstruct.create("div", {
+                 //class: "resultsContent"
          }, this.container);
          domClass.add(content, 'resutsContent');
              
@@ -83,6 +85,7 @@ define([
                var fld = this.fields[i];
                var alias = this.aliases[i];
                var div = domConstruct.create("div", {
+                 //class: "recDemographics",
                  innerHTML: alias + "<br/><span class='num'>" + number.format(feature.attributes[fld]) + "</span>"
                }, content);
                domClass.add(div, 'recDemographics');
