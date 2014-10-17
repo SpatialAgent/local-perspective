@@ -33,7 +33,7 @@ Enable Routing Directions: Choose this option to allow users to generate turn by
 1. Download and unzip the .zip file or clone the repo. 
 2. Web-enable the directory
 3. Access the .html page 
-4. See the readme.html page for more details. 
+4. See the readme page for more details. 
 
 
 #Requirements
