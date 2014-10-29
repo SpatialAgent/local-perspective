@@ -1,50 +1,17 @@
 define([
         'dojo/_base/declare',
-        'dojo/_base/array',
         'dojo/_base/lang',
-        'dojo/_base/Color',
-        'dojo/dom', 
         'dojo/dom-class',
         'dojo/dom-construct',
-        'dojo/dom-style', 
-        'dojo/number',
-        'esri/config',
-        'esri/geometry/mathUtils',
-        'esri/geometry/Point',
         'esri/geometry/webMercatorUtils',
-        'esri/graphic',
-        'esri/request',
-        'esri/symbols/SimpleMarkerSymbol',
-        'esri/symbols/SimpleLineSymbol',
-        'esri/symbols/Font',
-        'esri/symbols/TextSymbol',
-        'esri/tasks/query',
-        'esri/tasks/QueryTask',
-        'esri/tasks/StatisticDefinition'
-        
+        'esri/request'
 	],function(
         declare, 
-        array, 
-        lang, 
-        Color,
-        dom, 
+        lang,
         domClass, 
         domConstruct, 
-        domStyle, 
-        number,
-        esriConfig,
-        mathUtils,
-        Point, 
         webMercatorUtils,
-        Graphic,
-        esriRequest,
-        SimpleMarkerSymbol,
-        SimpleLineSymbol,
-        Font,
-        TextSymbol,
-        Query,
-        QueryTask,
-        StatisticDefinition
+        esriRequest
 ){
 		
    var weatherInfo = declare('WeatherInfo', null, {
@@ -129,19 +96,18 @@ define([
          }, {
              useProxy: false
          });
-         var me = this;
          weatherDeferred.then(
-             function(response){
-                 me.resultsHandler(response);
-             }, 
-             function(error){
-                 me.errorHandler(error);
-             });
+             lang.hitch(this, function(response){
+                 this._resultsHandler(response);
+             }), 
+             lang.hitch(this, function(error){
+                 this._errorHandler(error);
+             }));
        },
         	
     		    
       // results handler
-      resultsHandler: function(results) {
+      _resultsHandler: function(results) {
          this.container.innerHTML = "";
          
          var content = domConstruct.create("div", {
@@ -200,7 +166,7 @@ define([
          // forecast
          for (var i=0; i<weather.length; i++) {
             var cur = weather[i];
-            var day = this.getDay(cur.date);
+            var day = this._getDay(cur.date);
             var tempMax = cur["tempMax"+this.config.weatherUnits];
             var tempMin = cur["tempMin"+this.config.weatherUnits];
             var code = cur.weatherCode;
@@ -224,15 +190,15 @@ define([
       },
     
       // error handler
-      errorHandler: function(error) {
+      _errorHandler: function(error) {
          this.container.innerHTML = "";
-         var div = domConstruct.create("div", {
+         domConstruct.create("div", {
              innerHTML: error.message
          }, this.container);
       },
       
       // get day
-      getDay: function(dateString) {
+      _getDay: function(dateString) {
          var array = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
          var dtArray = dateString.split("-");
          var d = new Date(dtArray[0], dtArray[1]-1, dtArray[2]);

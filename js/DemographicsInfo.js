@@ -1,25 +1,17 @@
 define([
         'dojo/_base/declare',
-        'dojo/_base/array',
         'dojo/_base/lang',
-        'dojo/_base/Color',
-        'dojo/dom', 
         'dojo/dom-class',
         'dojo/dom-construct',
-        'dojo/dom-style', 
         'dojo/number',
         'esri/tasks/query',
         'esri/tasks/QueryTask',
         'esri/tasks/StatisticDefinition'
 	],function(
         declare, 
-        array, 
         lang, 
-        Color,
-        dom, 
         domClass, 
         domConstruct, 
-        domStyle, 
         number,
         Query,
         QueryTask,
@@ -65,13 +57,12 @@ define([
          query.returnGeometry = false;
          query.geometry = pageObj.buffer;
          query.outStatistics = outStats;
-         var me = this;
-         queryTask.execute(query, lang.hitch(me, me.resultsHandler), lang.hitch(me, me.errorHandler));
+         queryTask.execute(query, lang.hitch(this, this._resultsHandler), lang.hitch(this, this._errorHandler));
        },
         	
     		    
       // results handler
-      resultsHandler: function(results) {
+      _resultsHandler: function(results) {
          this.container.innerHTML = "";
          
          var content = domConstruct.create("div", {
@@ -95,9 +86,9 @@ define([
       },
     
       // error handler
-      errorHandler: function(error) {
+      _errorHandler: function(error) {
          this.container.innerHTML = "";
-         var div = domConstruct.create("div", {
+         domConstruct.create("div", {
              innerHTML: error.message
          }, this.container);
       }

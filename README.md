@@ -26,6 +26,8 @@ Show Lifestyle: Choose this option to include lifestyle information about the se
 Show Weather: Choose this option to include weather conditions for the selected location.
 
 Enable Routing Directions: Choose this option to allow users to generate turn by turn directions. *
+
+Route Utility Item: URL to route utility item (with stored credentials). *
 *requires organization account.
 
 #Instructions
@@ -54,7 +56,7 @@ Anyone and everyone is welcome to contribute.
 
 #Licensing 
 
-Copyright 2012 Esri
+Copyright 2014 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
