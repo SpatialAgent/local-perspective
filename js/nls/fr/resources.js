@@ -20,13 +20,13 @@ define(( {
    },
    "days" : {
       "now" : "MAINTENANT",
-      "sun" : "DIM",
-      "mon" : "LUN",
-      "tue" : "MAR",
-      "wed" : "MER",
-      "thu" : "JEU",
-      "fri" : "VEN",
-      "sat" : "SAM"
+      "sun" : "DIMANCHE",
+      "mon" : "LUNDI",
+      "tue" : "MARDI",
+      "wed" : "MERCREDI",
+      "thu" : "JEUDI",
+      "fri" : "VENDREDI",
+      "sat" : "SAMEDI"
    },
    "tooltips" : {
       "logo" : "Logo",
