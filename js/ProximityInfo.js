@@ -174,7 +174,7 @@ define([
                if (this.config && this.config.i18n) {
                   tip = this.config.i18n.tooltips.directions;
                }
-               if (geom.type == "point" && this.config.showDirections) {
+               if (geom.type == "point" && this.config.showDirections == true) {
                   var recRoute = domConstruct.create("div", {
                      title: tip
                   }, recHeader);
@@ -280,29 +280,31 @@ define([
       // Highlight Record
       _highlightRecord : function(num, zoom) {
          this.pageObj.selectedNum = num;
-         var gra = this.pageObj.proximityFeatures[num];
-         this.emit('highlight', {
-            data : gra
-         });
-         if (zoom)
-            this._zoomToLocation(gra);
-         var rec = dom.byId("rec_" + this.pageObj.id + "_" + num);
-         if (rec) {
-            domClass.add(rec, "recOpened");
-            var recB = dom.byId("recBody_" + this.pageObj.id + "_" + num);
-            var recDetails = domConstruct.create("div", {
-               id: "recDetails"
-            }, recB);
-            domClass.add(recDetails, "recDetails");
-            var cp = new ContentPane({
-               id: "recPane"
+         if (this.pageObj.proximityFeatures) {
+            var gra = this.pageObj.proximityFeatures[num];
+            this.emit('highlight', {
+               data : gra
             });
-            cp.placeAt('recDetails', 'last');
-            cp.startup();
-            var content = gra.getContent();
-            registry.byId("recPane").set("content", content);
-            if (!zoom) {
-               setTimeout(lang.hitch(this, this._updatePosition), 300);
+            if (zoom)
+               this._zoomToLocation(gra);
+            var rec = dom.byId("rec_" + this.pageObj.id + "_" + num);
+            if (rec) {
+               domClass.add(rec, "recOpened");
+               var recB = dom.byId("recBody_" + this.pageObj.id + "_" + num);
+               var recDetails = domConstruct.create("div", {
+                  id: "recDetails"
+               }, recB);
+               domClass.add(recDetails, "recDetails");
+               var cp = new ContentPane({
+                  id: "recPane"
+               });
+               cp.placeAt('recDetails', 'last');
+               cp.startup();
+               var content = gra.getContent();
+               registry.byId("recPane").set("content", content);
+               if (!zoom) {
+                  setTimeout(lang.hitch(this, this._updatePosition), 300);
+               }
             }
          }
       },
@@ -341,7 +343,7 @@ define([
       // Update Selection
       updateSelection : function() {
          this._unselectRecords();
-         if (this.pageObj.selectedNum >= 0) {
+         if (this.pageObj && this.pageObj.selectedNum >= 0) {
             var num = this.pageObj.selectedNum;
             this._unselectRecords();
             this._highlightRecord(num, false);
