@@ -15,20 +15,27 @@
  | limitations under the License.
  */
 define(
-     ({
-        map: {
-            error: "Impossibile creare la mappa"
-        },
-        days: {
-           now: "ORA",
-           sun: "DOM",
-           mon: "LUN",
-           tue: "MAR",
-           wed: "MER",
-           thu: "GIO",
-           fri: "VEN",
-           sat: "SAB"
-        }
-    })
- 
+    ({
+      "map": {
+         "error": "Đ_Unable to create map_ớ"
+      },
+      "days": {
+         "now": "Đ_NOW_ớ",
+         "sun": "Đ_SUN_ớ",
+         "mon": "Đ_MON_ớ",
+         "tue": "Đ_TUE_ớ",
+         "wed": "Đ_WED_ớ",
+         "thu": "Đ_THU_ớ",
+         "fri": "Đ_FRI_ớ",
+         "sat": "Đ_SAT_ớ"
+      },
+      "tooltips": {
+         "logo": "Đ_Logo_ớ",
+         "menu": "Đ_Menu_ớ",
+         "close": "Đ_Close_ớ",
+         "previous": "Đ_Previous_ớ",
+         "next": "Đ_Next_ớ",
+         "directions": "Đ_Directions_ớ"
+      }
+   })
 );
