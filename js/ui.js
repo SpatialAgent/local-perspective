@@ -241,18 +241,20 @@ define([
             num +=1;
             pages.push({id:num, label: this.config.weatherLabel, type:"weather", color: this._getPageColor(num), buffer:null, proximityFeatures: null, update:true});
             try {
-               if (this.config.weatherLayerURL_Tiled) {
-                  this.lyrWeather = new WebTiledLayer(this.config.weatherLayerURL_Tiled);
-                  this.lyrWeather.setOpacity(0.6);
-                  this.lyrWeather.setVisibility(false);
-                  this.map.addLayer(this.lyrWeather);
-               } else {
+               // change to use WMS service instead of AccuWeather
+               // if (this.config.weatherLayerURL_Tiled) {
+                  // this.lyrWeather = new WebTiledLayer(this.config.weatherLayerURL_Tiled);
+                  // this.lyrWeather.setOpacity(0.6);
+                  // this.lyrWeather.setVisibility(false);
+                  // this.map.addLayer(this.lyrWeather);
+               // } else {
                   if (this.config.weatherLayerURL_WMS) {
                      this.lyrWeather = new WMSLayer(this.config.weatherLayerURL_WMS, {opacity: 0.5, format: "png", visibleLayers: [0]});
                      this.lyrWeather.setVisibility(false);
+                     console.log(this.lyrWeather);
                      this.map.addLayer(this.lyrWeather);
                   }
-               }
+               //}
             } catch(err) {
                console.log("Unable to create weather layer: " + err);
             }
@@ -893,25 +895,28 @@ define([
         // ROUTE TO LOCATION
         _routeToLocation: function(event) {
             var pt = event.data;
-            this.dirWidget.reset();
-            this.dirWidget.removeStops();
-            this._toggleDirections();
-            var def = this.dirWidget.addStops([this.location, pt]);
-            def.then(lang.hitch(this, function(){
-                 this.dirWidget.getDirections();
-             }));
+            var promise = this.dirWidget.reset();
+            promise.then(lang.hitch(this, function(){
+               this._toggleDirections();
+               var def = this.dirWidget.addStops([this.location, pt]);
+               def.then(lang.hitch(this, function(){
+                  this.dirWidget.getDirections();
+               }));
+            }));
         },
         
         // REVERSE DIRECTIONS
         _reverseDirections: function() {
-            var stops = this.dirWidget.stops;
+            var stops = this.dirWidget.stops.slice();
             stops.reverse();
-            this.dirWidget.reset();
-            this.dirWidget.removeStops();
-            var def = this.dirWidget.addStops(stops);
-            def.then(lang.hitch(this, function(){
-                 this.dirWidget.getDirections();
-             }));
+            var promise = this.dirWidget.reset();
+            promise.then(lang.hitch(this, function(){
+               this._toggleDirections();
+               var def = this.dirWidget.addStops(stops);
+               def.then(lang.hitch(this, function(){
+                  this.dirWidget.getDirections();
+               }));
+            }));
         },
         
         // TOGGLE DIRECTIONS

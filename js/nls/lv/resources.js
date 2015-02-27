@@ -16,26 +16,26 @@
  */
 define(
     ({
-      "map": {
-         "error": "Nevar izveidot karti"
+      "map" : {
+         "error" : "Nevar izveidot karti"
       },
-      "days": {
-         "now": "TAGAD",
-         "sun": "SV",
-         "mon": "PR",
-         "tue": "OT",
-         "wed": "TR",
-         "thu": "CE",
-         "fri": "PK",
-         "sat": "SE"
+      "days" : {
+         "now" : "TŪLĪT",
+         "sun" : "SVĒTD.",
+         "mon" : "PIRMD.",
+         "tue" : "OTRD.",
+         "wed" : "TREŠD.",
+         "thu" : "CETURTD.",
+         "fri" : "PIEKTD.",
+         "sat" : "SESTD."
       },
-      "tooltips": {
-         "logo": "Logotips",
-         "menu": "Izvēlne",
-         "close": "Aizvērt",
-         "previous": "Iepriekšējais",
-         "next": "Nākamais",
-         "directions": "Norādes"
+      "tooltips" : {
+         "logo" : "Logotips",
+         "menu" : "Izvēlne",
+         "close" : "Aizvērt",
+         "previous" : "Atpakaļ",
+         "next" : "Tālāk",
+         "directions" : "Norādes"
       }
    })
 );

@@ -16,26 +16,26 @@
  */
 define(
     ({
-      "map": {
-         "error": "Impossibile creare la mappa"
+      "map" : {
+         "error" : "Δεν είναι δυνατή η δημιουργία χάρτη"
       },
-      "days": {
-         "now": "ORA",
-         "sun": "DOM",
-         "mon": "LUN",
-         "tue": "MAR",
-         "wed": "MER",
-         "thu": "GIO",
-         "fri": "VEN",
-         "sat": "SAB"
+      "days" : {
+         "now" : "ΤΩΡΑ",
+         "sun" : "ΚΥΡ",
+         "mon" : "ΔΕΥ",
+         "tue" : "ΤΡΙ",
+         "wed" : "ΤΕΤ",
+         "thu" : "ΠΕΜ",
+         "fri" : "ΠΑΡ",
+         "sat" : "ΣΑΒ"
       },
-      "tooltips": {
-         "logo": "Logo",
-         "menu": "Menu",
-         "close": "Chiudi",
-         "previous": "Indietro",
-         "next": "Avanti",
-         "directions": "Indicazioni"
+      "tooltips" : {
+         "logo" : "Λογότυπο",
+         "menu" : "Μενού",
+         "close" : "Κλείσιμο",
+         "previous" : "Προηγούμενο",
+         "next" : "Επόμενο",
+         "directions" : "Οδηγίες"
       }
    })
 );
