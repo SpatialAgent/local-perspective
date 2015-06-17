@@ -72,6 +72,7 @@ define({
     "directionsLabel": "Directions",
     "directionsURL": null,
     "distanceUnits": "miles", // options: miles or kilometers
+    "maxDistance": 10,
     "defaultDistance": 3,
     "defaultZoomLevel": 14,
     "defaultToCenter": true,
@@ -79,7 +80,7 @@ define({
     
     // **************************** //
     // ** UTILITY PARAMETERS     ** //
-    "routeUtility" : "",
+    "routeUtility" : "http://utility.arcgis.com/usrsvcs/servers/4394c7efb65548519c9963adca849e8e/rest/services/World/Route/NAServer/Route_World",
     // **************************** //
     
     //This option demonstrates how to handle additional custom url parameters. For example

@@ -17,25 +17,25 @@
 define(
     ({
       "map" : {
-         "error" : "Nevar izveidot karti"
+         "error" : "ķ_Unable to create map_ū"
       },
       "days" : {
-         "now" : "TŪLĪT",
-         "sun" : "SVĒTD.",
-         "mon" : "PIRMD.",
-         "tue" : "OTRD.",
-         "wed" : "TREŠD.",
-         "thu" : "CETURTD.",
-         "fri" : "PIEKTD.",
-         "sat" : "SESTD."
+         "now" : "ķ_NOW_ū",
+         "sun" : "ķ_SUN_ū",
+         "mon" : "ķ_MON_ū",
+         "tue" : "ķ_TUE_ū",
+         "wed" : "ķ_WED_ū",
+         "thu" : "ķ_THU_ū",
+         "fri" : "ķ_FRI_ū",
+         "sat" : "ķ_SAT_ū"
       },
       "tooltips" : {
-         "logo" : "Logotips",
-         "menu" : "Izvēlne",
-         "close" : "Aizvērt",
-         "previous" : "Atpakaļ",
-         "next" : "Tālāk",
-         "directions" : "Norādes"
+         "logo" : "ķ_Logo_ū",
+         "menu" : "ķ_Menu_ū",
+         "close" : "ķ_Close_ū",
+         "previous" : "ķ_Previous_ū",
+         "next" : "ķ_Next_ū",
+         "directions" : "ķ_Directions_ū"
       }
    })
 );
