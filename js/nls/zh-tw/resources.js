@@ -17,25 +17,25 @@
 define(
     ({
       "map" : {
-         "error" : "맵을 생성할 수 없음"
+         "error" : "無法建立地圖"
       },
       "days" : {
-         "now" : "지금",
-         "sun" : "일",
-         "mon" : "월",
-         "tue" : "화",
-         "wed" : "수",
-         "thu" : "목",
-         "fri" : "금",
-         "sat" : "토"
+         "now" : "目前",
+         "sun" : "星期日",
+         "mon" : "星期一",
+         "tue" : "星期二",
+         "wed" : "星期三",
+         "thu" : "星期四",
+         "fri" : "星期五",
+         "sat" : "星期六"
       },
       "tooltips" : {
-         "logo" : "로고",
-         "menu" : "메뉴",
-         "close" : "닫기",
-         "previous" : "이전",
-         "next" : "다음",
-         "directions" : "길찾기"
+         "logo" : "標誌",
+         "menu" : "功能表",
+         "close" : "關閉",
+         "previous" : "上一步",
+         "next" : "下一步",
+         "directions" : "方向"
       }
    })
 );
