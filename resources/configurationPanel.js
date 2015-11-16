@@ -21,6 +21,10 @@
                "placeHolder" : "Logo URL"
             },
             {
+               "type":"paragraph",
+               "value": "The color theme for this app can be defined in two ways: Use the color picker to select a global color for the app; or check 'Cycle colors for layers' to show a different color for each of the layers in the map.  This option will cycle through a set of predefined colors when you scroll through the different operational layers in the map."
+            },
+            {
                "type" : "color",
                "fieldName" : "color",
                "label" : "Color",
@@ -85,17 +89,6 @@
                   "title": "Route"
                }]
             },
-            // {
-            //    "type": "string",
-            //    "fieldName": "routeUtility",
-            //    "label": "Route utility item (with stored credentials)",
-            //    "tooltip": "URL to route utility item",
-            //    "placeHolder": ""
-            // },
-            // {
-            //    "type": "paragraph",
-            //    "value": "View the <a style=\"color:#007AC2;\" target=\"_blank\" href=\"http://www.arcgis.com/apps/LocalPerspective/resources/doc/addpremiumservice.html\">Configure a premium service for anonymous access<\/a> help topic for more details"
-            // },
             {
                "type" : "string",
                "fieldName" : "distanceUnits",
