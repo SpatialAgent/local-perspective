@@ -5,6 +5,13 @@
          "fields" : [
             {
                "type" : "webmap"
+            },
+            {
+               "type": "appproxies",
+               "serviceProxies": [{
+                  "title": "Route",
+                  "name": "route"
+               }]
             }
       ]
    },
@@ -93,13 +100,6 @@
                "tooltip" : "Enable routing directions"
             },
             {
-               "type": "appproxies",
-               "serviceProxies": [{
-                  "title": "Route",
-                  "name": "route"
-               }]
-            },
-            {
                "type" : "string",
                "fieldName" : "distanceUnits",
                "tooltip" : "Distance units",
@@ -140,7 +140,7 @@
       "title" : "Local Perspective",
       "logo" : "images/logo.png",
       "color" : "#80ab00",
-      "cycleColors" : false,
+      "cycleColors" : true,
       "defaultToCenter" : true,
       "showDemograpics" : true,
       "showLifestyle" : true,
