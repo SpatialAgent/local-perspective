@@ -39,7 +39,7 @@ define({
     //to show how to setup the strings file.
     "localize": true,
     "units": null,
-    
+
     // **************************** //
     // ** UI SPECIFIC PARAMETERS ** //
     "cycleColors": true,
@@ -48,7 +48,7 @@ define({
     "logo" : "images/logo.png",
     "title": "Local Perspective",
     // **************************** //
-    
+
     // **************************** //
     // ** LOCAL PERSPECTIVE PARAMETERS **//
     "showDemographics": true,
@@ -77,12 +77,12 @@ define({
     "defaultZoomLevel": 14,
     "defaultToCenter": true,
     // **************************** //
-    
+
     // **************************** //
     // ** UTILITY PARAMETERS     ** //
     "routeUtility" : "",
     // **************************** //
-    
+
     //This option demonstrates how to handle additional custom url parameters. For example
     //if you want users to be able to specify lat/lon coordinates that define the map's center or
     //specify an alternate basemap via a url parameter.

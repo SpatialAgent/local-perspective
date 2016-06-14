@@ -38,7 +38,12 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
 ], function(
   array, declare, kernel, lang, Evented, Deferred, string, domClass, all, esriConfig, IdentityManager, esriLang, esriRequest, urlUtils, esriPortal, ArcGISOAuthInfo, arcgisUtils, GeometryService, defaults) {
   return declare([Evented], {
-    sharedStyling: {},
+    sharedStyling: {
+      colors: ["#737373"],
+      foobartest: 0,
+      title: "so special",
+      logo: ""
+    },
     config: {},
     orgConfig: {},
     appConfig: {},
@@ -78,14 +83,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     _init: function() {
       var deferred;
       deferred = new Deferred();
-      console.log("_init");
-      console.log(this.sharedStyling);
-      this.sharedStyling = {
-        a: 1
-      };
-      console.log(this.sharedStyling);
-      this.sharedStyling = this._getSharedStyling(564);
-      console.log(this.sharedStyling);
       // Set the web map, group and appid if they exist but ignore other url params.
       // Additional url parameters may be defined by the application but they need to be mixed in
       // to the config object after we retrieve the application configuration info. As an example,
@@ -168,7 +165,9 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             mix in all the settings we got!
             {} <- i18n <- organization <- application <- group info <- group items <- webmap <- custom url params <- standard url params.
             */
-      lang.mixin( /*this.sharedStyling, */ this.config, this.i18nConfig, this.orgConfig, this.appConfig, this.groupInfoConfig, this.groupItemConfig, this.itemConfig, this.customUrlConfig, this.urlConfig);
+      console.log("sS", this.sharedStyling);
+      lang.mixin(this.config, this.i18nConfig, this.orgConfig, this.appConfig, this.groupInfoConfig, this.groupItemConfig, this.itemConfig, this.customUrlConfig, this.urlConfig, this.sharedStyling);
+      console.log("dir", this.config);
     },
     _createPortal: function() {
       var deferred = new Deferred();
@@ -314,6 +313,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       return deferred.promise;
     },
     _getSharedStyling: function(siteId) {
+
+      var self = this;
       // $.ajax({
       //   url: "https://opendatadev.arcgis.com/api/v2/sites/" + "564" + "?fields[sites]=stylesheets"
       // }).done(function(data) {
@@ -321,6 +322,11 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // });
 
       // function loadXMLDoc() {
+
+
+      // TODO use dojo(.xhr?)
+      // TODO talk w tom re dojo development, esri-request instead? what is best path
+
         var xmlhttp = new XMLHttpRequest();
 
         xmlhttp.onreadystatechange = function() {
@@ -339,8 +345,35 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         xmlhttp.open("GET", "https://opendatadev.arcgis.com/api/v2/sites/564", true);
         xmlhttp.send();
 
-        console.log(data); //figure out the way to call and use this data object. promises with xhr? 
+        // console.log(data); //figure out the way to call and use this data object. promises with xhr?
       // }
+
+
+    // (if dojo doesn't have correct promise implementation) wrap in a deffered
+      // var sharedStylesDeferred = esriRequest({
+      //     url: requestURL,
+      //     callbackParamName: "callback"
+      // }, {
+      //     useProxy: false
+      // });
+      // return sharedStylesDeferred.then(
+        function showData (data) {
+          self.sharedStyles.colors = "blablablab";
+
+          return true; // could be an issue, check for resolution
+        }
+
+
+    // take response and overwrite the sharedStyles object key value pairs
+
+
+      //     lang.hitch(this, function(response){
+      //         this._resultsHandler(response);
+      //     }),
+      //     lang.hitch(this, function(error){
+      //         this._errorHandler(error);
+      //     }));
+
 
       console.log("_getSharedStyling");
     },
