@@ -14,28 +14,26 @@
  | See the License for the specific language governing permissions and
  | limitations under the License.
  */
-define(
-    ({
-      "map" : {
-         "error" : "Δεν είναι δυνατή η δημιουργία χάρτη"
-      },
-      "days" : {
-         "now" : "ΤΩΡΑ",
-         "sun" : "ΚΥΡ",
-         "mon" : "ΔΕΥ",
-         "tue" : "ΤΡΙ",
-         "wed" : "ΤΕΤ",
-         "thu" : "ΠΕΜ",
-         "fri" : "ΠΑΡ",
-         "sat" : "ΣΑΒ"
-      },
-      "tooltips" : {
-         "logo" : "Λογότυπο",
-         "menu" : "Μενού",
-         "close" : "Κλείσιμο",
-         "previous" : "Προηγούμενο",
-         "next" : "Επόμενο",
-         "directions" : "Οδηγίες"
-      }
-   })
-);
+define({
+  "map": {
+    "error": "Δεν είναι δυνατή η δημιουργία χάρτη"
+  },
+  "days": {
+    "now": "ΤΩΡΑ",
+    "sun": "ΚΥΡ",
+    "mon": "ΔΕΥ",
+    "tue": "ΤΡΙ",
+    "wed": "ΤΕΤ",
+    "thu": "ΠΕΜ",
+    "fri": "ΠΑΡ",
+    "sat": "ΣΑΒ"
+  },
+  "tooltips": {
+    "logo": "Λογότυπο",
+    "menu": "Μενού",
+    "close": "Κλείσιμο",
+    "previous": "Προηγούμενο",
+    "next": "Επόμενο",
+    "directions": "Οδηγίες"
+  }
+});

@@ -14,28 +14,26 @@
  | See the License for the specific language governing permissions and
  | limitations under the License.
  */
-define(
-    ({
-      "map" : {
-         "error" : "לא ניתן ליצור מפה"
-      },
-      "days" : {
-         "now" : "עכשיו",
-         "sun" : "א'",
-         "mon" : "ב'",
-         "tue" : "ג'",
-         "wed" : "ד'",
-         "thu" : "ה'",
-         "fri" : "ו'",
-         "sat" : "שבת"
-      },
-      "tooltips" : {
-         "logo" : "סמל",
-         "menu" : "תפריט",
-         "close" : "סגור",
-         "previous" : "הקודם",
-         "next" : "הבא",
-         "directions" : "הוראות נסיעה"
-      }
-   })
-);
+define({
+  "map": {
+    "error": "לא ניתן ליצור מפה"
+  },
+  "days": {
+    "now": "עכשיו",
+    "sun": "א'",
+    "mon": "ב'",
+    "tue": "ג'",
+    "wed": "ד'",
+    "thu": "ה'",
+    "fri": "ו'",
+    "sat": "שבת"
+  },
+  "tooltips": {
+    "logo": "סמל",
+    "menu": "תפריט",
+    "close": "סגור",
+    "previous": "הקודם",
+    "next": "הבא",
+    "directions": "הוראות נסיעה"
+  }
+});

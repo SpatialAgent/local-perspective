@@ -14,28 +14,26 @@
  | See the License for the specific language governing permissions and
  | limitations under the License.
  */
-define(
-    ({
-      "map" : {
-         "error" : "Impossible de créer la carte"
-      },
-      "days" : {
-         "now" : "MAINTENANT",
-         "sun" : "DIM",
-         "mon" : "LUN",
-         "tue" : "MAR",
-         "wed" : "MER",
-         "thu" : "JEU",
-         "fri" : "VEN",
-         "sat" : "SAM"
-      },
-      "tooltips" : {
-         "logo" : "Logo",
-         "menu" : "Menu",
-         "close" : "Fermer",
-         "previous" : "Précédent",
-         "next" : "Suivant",
-         "directions" : "Feuille de route"
-      }
-   })
-);
+define({
+  "map": {
+    "error": "Impossible de créer la carte"
+  },
+  "days": {
+    "now": "MAINTENANT",
+    "sun": "DIM",
+    "mon": "LUN",
+    "tue": "MAR",
+    "wed": "MER",
+    "thu": "JEU",
+    "fri": "VEN",
+    "sat": "SAM"
+  },
+  "tooltips": {
+    "logo": "Logo",
+    "menu": "Menu",
+    "close": "Fermer",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "directions": "Feuille de route"
+  }
+});

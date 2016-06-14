@@ -16,24 +16,24 @@
  */
 define({
   "map": {
-    "error": "Kaarti ei saa luua"
+    "error": "Nije moguće stvoriti kartu"
   },
   "days": {
-    "now": "KOHE",
-    "sun": "P",
-    "mon": "E",
-    "tue": "T",
-    "wed": "K",
-    "thu": "N",
-    "fri": "R",
-    "sat": "L"
+    "now": "SADA",
+    "sun": "NED",
+    "mon": "PON",
+    "tue": "UTO",
+    "wed": "SRI",
+    "thu": "ČET",
+    "fri": "PET",
+    "sat": "SUB"
   },
   "tooltips": {
-    "logo": "Logo",
-    "menu": "Menüü",
-    "close": "Sulge",
-    "previous": "Eelmine",
-    "next": "Järgmine",
-    "directions": "Teejuhised"
+    "logo": "Logotip",
+    "menu": "Izbornik",
+    "close": "Zatvori",
+    "previous": "Prethodno",
+    "next": "Sljedeće",
+    "directions": "Upute"
   }
 });

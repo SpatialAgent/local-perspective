@@ -14,28 +14,26 @@
  | See the License for the specific language governing permissions and
  | limitations under the License.
  */
-define(
-    ({
-      "map" : {
-         "error" : "Nu se poate crea harta"
-      },
-      "days" : {
-         "now" : "ACUM",
-         "sun" : "DUM",
-         "mon" : "LUN",
-         "tue" : "MA",
-         "wed" : "MI",
-         "thu" : "JOI",
-         "fri" : "VIN",
-         "sat" : "SÂM"
-      },
-      "tooltips" : {
-         "logo" : "Siglă",
-         "menu" : "Meniu",
-         "close" : "Închidere",
-         "previous" : "Anterior",
-         "next" : "Următor",
-         "directions" : "Indicaţii"
-      }
-   })
-);
+define({
+  "map": {
+    "error": "Nu se poate crea harta"
+  },
+  "days": {
+    "now": "ACUM",
+    "sun": "DUM",
+    "mon": "LUN",
+    "tue": "MA",
+    "wed": "MI",
+    "thu": "JOI",
+    "fri": "VIN",
+    "sat": "SÂM"
+  },
+  "tooltips": {
+    "logo": "Siglă",
+    "menu": "Meniu",
+    "close": "Închidere",
+    "previous": "Anterior",
+    "next": "Următor",
+    "directions": "Indicaţii"
+  }
+});

@@ -14,28 +14,26 @@
  | See the License for the specific language governing permissions and
  | limitations under the License.
  */
-define(
-    ({
-      "map" : {
-         "error" : "Kan ikke opprette kart"
-      },
-      "days" : {
-         "now" : "NÅ",
-         "sun" : "SØN",
-         "mon" : "MAN",
-         "tue" : "TIR",
-         "wed" : "ONS",
-         "thu" : "TOR",
-         "fri" : "FRE",
-         "sat" : "LØR"
-      },
-      "tooltips" : {
-         "logo" : "Logo",
-         "menu" : "Meny",
-         "close" : "Lukk",
-         "previous" : "Forrige",
-         "next" : "Neste",
-         "directions" : "Beskrivelser"
-      }
-   })
-);
+define({
+  "map": {
+    "error": "Kan ikke opprette kart"
+  },
+  "days": {
+    "now": "NÅ",
+    "sun": "SØN",
+    "mon": "MAN",
+    "tue": "TIR",
+    "wed": "ONS",
+    "thu": "TOR",
+    "fri": "FRE",
+    "sat": "LØR"
+  },
+  "tooltips": {
+    "logo": "Logo",
+    "menu": "Meny",
+    "close": "Lukk",
+    "previous": "Forrige",
+    "next": "Neste",
+    "directions": "Beskrivelser"
+  }
+});
