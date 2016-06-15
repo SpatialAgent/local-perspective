@@ -40,9 +40,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
   return declare([Evented], {
     sharedStyling: {
       colors: ["#737373"],
-      foobartest: 0,
-      title: "so special",
-      logo: ""
+      title: "Default App Name",
+      logo: "https://s-media-cache-ak0.pinimg.com/736x/62/d4/6a/62d46abb9d27ed8d5e5faf033e0c85ed.jpg"
     },
     config: {},
     orgConfig: {},
@@ -313,43 +312,29 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       return deferred.promise;
     },
     _getSharedStyling: function(siteId) {
-
       var self = this;
-      // $.ajax({
-      //   url: "https://opendatadev.arcgis.com/api/v2/sites/" + "564" + "?fields[sites]=stylesheets"
-      // }).done(function(data) {
-      //   console.log(data);
-      // });
-
-      // function loadXMLDoc() {
-
-
       // TODO use dojo(.xhr?)
       // TODO talk w tom re dojo development, esri-request instead? what is best path
-
-        var xmlhttp = new XMLHttpRequest();
-
-        xmlhttp.onreadystatechange = function() {
-          if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-            if (xmlhttp.status == 200) {
-              data = JSON.parse(xmlhttp.responseText);
-              console.log(data);
-            } else if (xmlhttp.status == 400) {
-              alert('There was an error 400');
-            } else {
-              alert('something else other than 200 was returned');
-            }
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+          if (xmlhttp.status == 200) {
+            data = JSON.parse(xmlhttp.responseText);
+            console.log(data);
+          } else if (xmlhttp.status == 400) {
+            alert('There was an error 400');
+          } else {
+            alert('something else other than 200 was returned');
           }
-        };
+        }
+      };
+      xmlhttp.open("GET", "https://opendatadev.arcgis.com/api/v2/sites/564", true);
+      xmlhttp.send();
 
-        xmlhttp.open("GET", "https://opendatadev.arcgis.com/api/v2/sites/564", true);
-        xmlhttp.send();
-
-        // console.log(data); //figure out the way to call and use this data object. promises with xhr?
+      // console.log(data); //figure out the way to call and use this data object. promises with xhr?
       // }
 
-
-    // (if dojo doesn't have correct promise implementation) wrap in a deffered
+      // (if dojo doesn't have correct promise implementation) wrap in a deffered
       // var sharedStylesDeferred = esriRequest({
       //     url: requestURL,
       //     callbackParamName: "callback"
@@ -357,25 +342,20 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       //     useProxy: false
       // });
       // return sharedStylesDeferred.then(
-        function showData (data) {
-          self.sharedStyles.colors = "blablablab";
+      function showData(data) {
+        self.sharedStyles.colors = "blablablab";
 
-          return true; // could be an issue, check for resolution
-        }
-
-
-    // take response and overwrite the sharedStyles object key value pairs
+        return true; // could be an issue, check for resolution
+      }
 
 
+      // take response and overwrite the sharedStyles object key value pairs
       //     lang.hitch(this, function(response){
       //         this._resultsHandler(response);
       //     }),
       //     lang.hitch(this, function(error){
       //         this._errorHandler(error);
       //     }));
-
-
-      console.log("_getSharedStyling");
     },
     queryGroupItems: function(options) {
       var deferred = new Deferred(),
