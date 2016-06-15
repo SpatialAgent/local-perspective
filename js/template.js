@@ -307,34 +307,53 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       return deferred.promise;
     },
+    _getSiteId: function() {
+      var vars = [], hash;
+      var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+      for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+      }
+      console.log("vars", vars);
+      return vars;
+    },
     _getSharedStyling: function() {
       var self = this;
       // TODO retrieve actual URL parameter
-      requestURL = "https://opendatadev.arcgis.com/api/v2/sites/565";
+      // 580
 
-      require(["dojo/request/xhr"], function (xhr){
-        xhr(requestURL, {
+      // requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/580";
+
+
+      var site = self._getSiteId()["site"];
+      console.log(site);
+      var requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (site ? site : "562");
+
+      console.log(requestUrl);
+
+      require(["dojo/request/xhr"], function(xhr) {
+        xhr(requestUrl, {
           handleAs: "json"
-        }).then(function(data){
+        }).then(function(data) {
           // Do something with the handled data
           console.log("dojoXHR:", data);
           self._adjustSharedStyling(data);
-        }, function(err){
+        }, function(err) {
           alert("error in retrieving shared style JSON");
         });
       });
     },
-    _adjustSharedStyling: function (data) {
-      console.log("Base sS Obj:", this.sharedStyling, this.sharedStyling.title, this.sharedStyling.logo, this.sharedStyling.color);
-      console.log(data);
+    _adjustSharedStyling: function(data) {
       // TODO set up logic for when there isn't new information to pull in
-      // TODO make code ready for impending changes
-      // TODO what is path to logo
+      // how to filter out the nulls, without receiving errors that a propert is null?
       // TODO which example sites to use
-      this.sharedStyling.title = data.data.attributes.title;
-      // this.sharedStyling.logo = data.data.attributes.layout.header.components.settings.logo;
-      this.sharedStyling.color = data.data.attributes.theme.body.bg;
-      console.log("Adjusted sS Obj:", this.sharedStyling, this.sharedStyling.title, this.sharedStyling.logo, this.sharedStyling.color);
+      // TODO sometimes the site doesn't come in, looks like it could be a race condition
+      console.log("nonAdjusted sS obj", this.sharedStyling);
+      this.sharedStyling.title = (data.data.attributes.title ? data.data.attributes.title : this.sharedStyling.title);
+      this.sharedStyling.colors[0] = (data.data.attributes.theme.body.bg ? data.data.attributes.theme.body.bg : this.sharedStyling.color);
+      this.sharedStyling.logo = (data.data.attributes.layout.header.component.settings.logoUrl ? data.data.attributes.layout.header.component.settings.logoUrl : this.sharedStyling.logo);
+      console.log("Adjusted sS Obj:", this.sharedStyling);
     },
     queryGroupItems: function(options) {
       var deferred = new Deferred(),
