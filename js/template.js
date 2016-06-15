@@ -315,23 +315,13 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         vars.push(hash[0]);
         vars[hash[0]] = hash[1];
       }
-      console.log("vars", vars);
       return vars;
     },
     _getSharedStyling: function() {
       var self = this;
-      // TODO retrieve actual URL parameter
-      // 580
-
-      // requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/580";
-
-
       var site = self._getSiteId()["site"];
-      console.log(site);
-      var requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (site ? site : "562");
-
+      var requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (site ? site : "");
       console.log(requestUrl);
-
       require(["dojo/request/xhr"], function(xhr) {
         xhr(requestUrl, {
           handleAs: "json"
@@ -345,10 +335,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       });
     },
     _adjustSharedStyling: function(data) {
-      // TODO set up logic for when there isn't new information to pull in
-      // how to filter out the nulls, without receiving errors that a propert is null?
-      // TODO which example sites to use
-      // TODO sometimes the site doesn't come in, looks like it could be a race condition
       console.log("nonAdjusted sS obj", this.sharedStyling);
       this.sharedStyling.title = (data.data.attributes.title ? data.data.attributes.title : this.sharedStyling.title);
       this.sharedStyling.colors[0] = (data.data.attributes.theme.body.bg ? data.data.attributes.theme.body.bg : this.sharedStyling.color);
