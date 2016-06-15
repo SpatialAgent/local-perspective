@@ -309,27 +309,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     },
     _getSharedStyling: function() {
       var self = this;
-
-      // // working vanilla JS XHR
-      // var xmlhttp = new XMLHttpRequest();
-      // xmlhttp.onreadystatechange = function() {
-      //   if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-      //     if (xmlhttp.status == 200) {
-      //       data = JSON.parse(xmlhttp.responseText);
-      //       console.log("Returned JSON Data", data);
-      //       showData();
-      //     } else if (xmlhttp.status == 400) {
-      //       alert('There was an error 400');
-      //     } else {
-      //       alert('something else other than 200 was returned');
-      //     }
-      //   }
-      // };
-      // xmlhttp.open("GET", "https://opendatadev.arcgis.com/api/v2/sites/564", true);
-      // xmlhttp.send();
-
-      requestURL = "https://opendatadev.arcgis.com/api/v2/sites/564";
-
+      // TODO retrieve actual URL parameter
+      requestURL = "https://opendatadev.arcgis.com/api/v2/sites/565";
 
       require(["dojo/request/xhr"], function (xhr){
         xhr(requestURL, {
@@ -337,42 +318,23 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         }).then(function(data){
           // Do something with the handled data
           console.log("dojoXHR:", data);
+          self._adjustSharedStyling(data);
         }, function(err){
-          // Handle the error condition
-        }, function(evt){
-          // Handle a progress event from the request if the
-          // browser supports XHR2
+          alert("error in retrieving shared style JSON");
         });
       });
-
-
-
-
-      // (if dojo doesn't have correct promise implementation) wrap in a deffered
-      // var sharedStylesDeferred = esriRequest({
-      //   url: requestURL,
-      //   callbackParamName: "callback"
-      // }, {
-      //   useProxy: false
-      // });
-
-
-      // return sharedStylesDeferred.then(
-      function showData(data) {
-        // self.sharedStyles.colors = "blablablab";
-        console.log("showData", data);
-        return true; // could be an issue, check for resolution
-      }
-
-
-
-      // take response and overwrite the sharedStyles object key value pairs
-      //     lang.hitch(this, function(response){
-      //         this._resultsHandler(response);
-      //     }),
-      //     lang.hitch(this, function(error){
-      //         this._errorHandler(error);
-      //     }));
+    },
+    _adjustSharedStyling: function (data) {
+      console.log("Base sS Obj:", this.sharedStyling, this.sharedStyling.title, this.sharedStyling.logo, this.sharedStyling.color);
+      console.log(data);
+      // TODO set up logic for when there isn't new information to pull in
+      // TODO make code ready for impending changes
+      // TODO what is path to logo
+      // TODO which example sites to use
+      this.sharedStyling.title = data.data.attributes.title;
+      // this.sharedStyling.logo = data.data.attributes.layout.header.components.settings.logo;
+      this.sharedStyling.color = data.data.attributes.theme.body.bg;
+      console.log("Adjusted sS Obj:", this.sharedStyling, this.sharedStyling.title, this.sharedStyling.logo, this.sharedStyling.color);
     },
     queryGroupItems: function(options) {
       var deferred = new Deferred(),
