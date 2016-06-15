@@ -117,7 +117,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           portal: this._createPortal(),
           // get org data
           org: this.queryOrganization(),
-          test: console.log("test2 1st tier")
         }).then(lang.hitch(this, function() {
           // mixin all new settings from org and app
           this._mixinAll();
@@ -164,9 +163,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             mix in all the settings we got!
             {} <- i18n <- organization <- application <- group info <- group items <- webmap <- custom url params <- standard url params.
             */
-      console.log("sharedStyling", this.sharedStyling);
       lang.mixin(this.config, this.i18nConfig, this.orgConfig, this.appConfig, this.groupInfoConfig, this.groupItemConfig, this.itemConfig, this.customUrlConfig, this.urlConfig, this.sharedStyling);
-      console.log("mixedIn", this.config);
     },
     _createPortal: function() {
       var deferred = new Deferred();
@@ -307,27 +304,17 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       return deferred.promise;
     },
-    _getSiteId: function() {
-      var vars = [], hash;
-      var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-      for (var i = 0; i < hashes.length; i++) {
-        hash = hashes[i].split('=');
-        vars.push(hash[0]);
-        vars[hash[0]] = hash[1];
-      }
-      return vars;
-    },
     _getSharedStyling: function() {
       var self = this;
-      var site = self._getSiteId()["site"];
+      var urlObj = self._createUrlParamsObject();
+      site = urlObj.query.site;
       var requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (site ? site : "");
-      console.log(requestUrl);
       require(["dojo/request/xhr"], function(xhr) {
         xhr(requestUrl, {
           handleAs: "json"
         }).then(function(data) {
           // Do something with the handled data
-          console.log("dojoXHR:", data);
+          console.log("dojoXHR:", site, data);
           self._adjustSharedStyling(data);
         }, function(err) {
           alert("error in retrieving shared style JSON");
@@ -335,7 +322,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       });
     },
     _adjustSharedStyling: function(data) {
-      console.log("nonAdjusted sS obj", this.sharedStyling);
       this.sharedStyling.title = (data.data.attributes.title ? data.data.attributes.title : this.sharedStyling.title);
       this.sharedStyling.colors[0] = (data.data.attributes.theme.body.bg ? data.data.attributes.theme.body.bg : this.sharedStyling.color);
       this.sharedStyling.logo = (data.data.attributes.layout.header.component.settings.logoUrl ? data.data.attributes.layout.header.component.settings.logoUrl : this.sharedStyling.logo);
