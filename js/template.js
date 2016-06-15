@@ -54,8 +54,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     customUrlConfig: {},
     commonUrlItems: ["webmap", "appid", "group", "oauthappid"],
     constructor: function(templateConfig) {
-      console.log("templateConfig:");
-      console.log(templateConfig);
       // template settings
       var defaultTemplateConfig = {
         queryForWebmap: true
@@ -98,6 +96,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // (center, basemap, theme) are only here as examples and can be removed if you don't plan on
       // supporting additional url parameters in your application.
       this.customUrlConfig = this._getUrlParamValues(this.templateConfig.urlItems);
+      // retrieve Shared Styling JSON from appropriate parent site (based on id#)
+      this.customUrlConfig = this._getSharedStyling();
       // config defaults <- standard url params
       // we need the webmap, appid, group and oauthappid to query for the data
       this._mixinAll();
@@ -164,9 +164,9 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             mix in all the settings we got!
             {} <- i18n <- organization <- application <- group info <- group items <- webmap <- custom url params <- standard url params.
             */
-      console.log("sS", this.sharedStyling);
+      console.log("sharedStyling", this.sharedStyling);
       lang.mixin(this.config, this.i18nConfig, this.orgConfig, this.appConfig, this.groupInfoConfig, this.groupItemConfig, this.itemConfig, this.customUrlConfig, this.urlConfig, this.sharedStyling);
-      console.log("dir", this.config);
+      console.log("mixedIn", this.config);
     },
     _createPortal: function() {
       var deferred = new Deferred();
@@ -202,8 +202,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           }
         }
       }
-      console.log("url params:");
-      console.log(obj);
       return obj;
     },
     _createUrlParamsObject: function() {
@@ -221,8 +219,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       urlObject.query = urlObject.query || {};
       // remove any HTML tags from query item
       urlObject.query = esriLang.stripTags(urlObject.query);
-      console.log("urlOject:");
-      console.log(urlObject);
       return urlObject;
     },
     _initializeApplication: function() {
@@ -311,42 +307,63 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       return deferred.promise;
     },
-    _getSharedStyling: function(siteId) {
+    _getSharedStyling: function() {
       var self = this;
-      // TODO use dojo(.xhr?)
-      // TODO talk w tom re dojo development, esri-request instead? what is best path
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-          if (xmlhttp.status == 200) {
-            data = JSON.parse(xmlhttp.responseText);
-            console.log(data);
-          } else if (xmlhttp.status == 400) {
-            alert('There was an error 400');
-          } else {
-            alert('something else other than 200 was returned');
-          }
-        }
-      };
-      xmlhttp.open("GET", "https://opendatadev.arcgis.com/api/v2/sites/564", true);
-      xmlhttp.send();
 
-      // console.log(data); //figure out the way to call and use this data object. promises with xhr?
-      // }
+      // // working vanilla JS XHR
+      // var xmlhttp = new XMLHttpRequest();
+      // xmlhttp.onreadystatechange = function() {
+      //   if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+      //     if (xmlhttp.status == 200) {
+      //       data = JSON.parse(xmlhttp.responseText);
+      //       console.log("Returned JSON Data", data);
+      //       showData();
+      //     } else if (xmlhttp.status == 400) {
+      //       alert('There was an error 400');
+      //     } else {
+      //       alert('something else other than 200 was returned');
+      //     }
+      //   }
+      // };
+      // xmlhttp.open("GET", "https://opendatadev.arcgis.com/api/v2/sites/564", true);
+      // xmlhttp.send();
+
+      requestURL = "https://opendatadev.arcgis.com/api/v2/sites/564";
+
+
+      require(["dojo/request/xhr"], function (xhr){
+        xhr(requestURL, {
+          handleAs: "json"
+        }).then(function(data){
+          // Do something with the handled data
+          console.log("dojoXHR:", data);
+        }, function(err){
+          // Handle the error condition
+        }, function(evt){
+          // Handle a progress event from the request if the
+          // browser supports XHR2
+        });
+      });
+
+
+
 
       // (if dojo doesn't have correct promise implementation) wrap in a deffered
       // var sharedStylesDeferred = esriRequest({
-      //     url: requestURL,
-      //     callbackParamName: "callback"
+      //   url: requestURL,
+      //   callbackParamName: "callback"
       // }, {
-      //     useProxy: false
+      //   useProxy: false
       // });
+
+
       // return sharedStylesDeferred.then(
       function showData(data) {
-        self.sharedStyles.colors = "blablablab";
-
+        // self.sharedStyles.colors = "blablablab";
+        console.log("showData", data);
         return true; // could be an issue, check for resolution
       }
+
 
 
       // take response and overwrite the sharedStyles object key value pairs
