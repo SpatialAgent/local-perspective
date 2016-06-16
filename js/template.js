@@ -308,6 +308,26 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       var self = this;
       var urlObj = self._createUrlParamsObject();
       site = urlObj.query.site;
+
+
+      // consider renaming vars (site isn't that right word when applying to multiple concepts)
+          // theme=
+
+      switch (expression) {
+        case expression:
+
+          break;
+        default:
+
+      }
+      // switch statement based on domain/site/current
+      //  against 3 regex, is all digits? (d+)
+      //  then host name
+      //  then use "current" (is it site="current"), return current url
+
+
+
+
       var requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (site ? site : "");
       require(["dojo/request/xhr"], function(xhr) {
         xhr(requestUrl, {
