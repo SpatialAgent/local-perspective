@@ -96,8 +96,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // (center, basemap, theme) are only here as examples and can be removed if you don't plan on
       // supporting additional url parameters in your application.
       this.customUrlConfig = this._getUrlParamValues(this.templateConfig.urlItems);
-      // retrieve Shared Styling JSON from appropriate parent site (based on id#)
-      this.customUrlConfig = this._getSharedStyling();
+      // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
+      this.customUrlConfig = this.getSharedStyling();
       // config defaults <- standard url params
       // we need the webmap, appid, group and oauthappid to query for the data
       this._mixinAll();
@@ -304,22 +304,18 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       return deferred.promise;
     },
-    _getSharedStyling: function() {
+    getSharedStyling: function() {
       var self = this;
       var urlObj = self._createUrlParamsObject();
-      site = urlObj.query.site;
+      theme = urlObj.query.theme;
 
-
-      // consider renaming vars (site isn't that right word when applying to multiple concepts)
-          // theme=
-
-      switch (expression) {
-        case expression:
-
-          break;
-        default:
-
-      }
+      // switch (expression) {
+      //   case expression:
+      //
+      //     break;
+      //   default:
+      //
+      // }
       // switch statement based on domain/site/current
       //  against 3 regex, is all digits? (d+)
       //  then host name
@@ -328,20 +324,20 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
 
 
 
-      var requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (site ? site : "");
+      var requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (theme ? theme : "");
       require(["dojo/request/xhr"], function(xhr) {
         xhr(requestUrl, {
           handleAs: "json"
         }).then(function(data) {
           // Do something with the handled data
-          console.log("dojoXHR:", site, data);
-          self._adjustSharedStyling(data);
+          console.log("dojoXHR:", theme, data);
+          self.adjustSharedStyling(data);
         }, function(err) {
           alert("error in retrieving shared style JSON");
         });
       });
     },
-    _adjustSharedStyling: function(data) {
+    adjustSharedStyling: function(data) {
       this.sharedStyling.title = (data.data.attributes.title ? data.data.attributes.title : this.sharedStyling.title);
       this.sharedStyling.colors[0] = (data.data.attributes.theme.body.bg ? data.data.attributes.theme.body.bg : this.sharedStyling.color);
       this.sharedStyling.logo = (data.data.attributes.layout.header.component.settings.logoUrl ? data.data.attributes.layout.header.component.settings.logoUrl : this.sharedStyling.logo);
