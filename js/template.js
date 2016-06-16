@@ -39,6 +39,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
   array, declare, kernel, lang, Evented, Deferred, string, domClass, all, esriConfig, IdentityManager, esriLang, esriRequest, urlUtils, esriPortal, ArcGISOAuthInfo, arcgisUtils, GeometryService, defaults) {
   return declare([Evented], {
     sharedStyling: {
+      status: false,
       colors: ["#737373"],
       title: "Default App Name",
       logo: "https://s-media-cache-ak0.pinimg.com/736x/62/d4/6a/62d46abb9d27ed8d5e5faf033e0c85ed.jpg"
@@ -97,7 +98,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // supporting additional url parameters in your application.
       this.customUrlConfig = this._getUrlParamValues(this.templateConfig.urlItems);
       // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
-      this.customUrlConfig = this.getSharedStyling();
+      this.customUrlConfig = this.getSharedStylingObject();
       // config defaults <- standard url params
       // we need the webmap, appid, group and oauthappid to query for the data
       this._mixinAll();
@@ -304,27 +305,39 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       return deferred.promise;
     },
-    getSharedStyling: function() {
-      var self = this;
-      var urlObj = self._createUrlParamsObject();
-      theme = urlObj.query.theme;
-
-      // switch (expression) {
-      //   case expression:
-      //
-      //     break;
-      //   default:
-      //
-      // }
+    getSharedStylingStatus: function(expression) {
+      switch (expression) {
+        case /\d+/.test(expression):
+          console.log("numbers");
+          break;
+        case "580":
+          console.log("case3");
+          break;
+        case "1":
+          console.log("case1");
+          break;
+        case "570":
+          console.log("case2");
+          break;
+        default:
+          console.log("default");
+      }
       // switch statement based on domain/site/current
       //  against 3 regex, is all digits? (d+)
       //  then host name
       //  then use "current" (is it site="current"), return current url
+    },
+    getSharedStylingObject: function() {
+      var self = this;
+      var urlObj = self._createUrlParamsObject();
+      theme = urlObj.query.theme;
 
+      console.log("theme:", theme);
+
+      var sharedStylingStatus = self.getSharedStylingStatus("60");
 
       // this code occurs earlier in stack resolution than ideal
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
-      console.log("cors:", esriConfig.defaults.io.corsEnabledServers);
 
       var requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (theme ? theme : "");
       console.log("requestUrl:", requestUrl);
@@ -332,8 +345,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         url: requestUrl,
         handleAs: "json"
       });
-      console.log(esri.config.defaults.io);
-      console.log(themeRequest);
       themeRequest.then(
         function(response) {
           console.log("Success: ", response);
@@ -342,7 +353,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         function(error) {
           console.log("Error: ", error.message);
         });
-
     },
     adjustSharedStyling: function(data) {
       this.sharedStyling.title = (data.data.attributes.title ? data.data.attributes.title : this.sharedStyling.title);
