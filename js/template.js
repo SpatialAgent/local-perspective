@@ -322,20 +322,27 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       //  then use "current" (is it site="current"), return current url
 
 
-
+      // this code occurs earlier in stack resolution than ideal
+      esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
+      console.log("cors:", esriConfig.defaults.io.corsEnabledServers);
 
       var requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (theme ? theme : "");
-      require(["dojo/request/xhr"], function(xhr) {
-        xhr(requestUrl, {
-          handleAs: "json"
-        }).then(function(data) {
-          // Do something with the handled data
-          console.log("dojoXHR:", theme, data);
-          self.adjustSharedStyling(data);
-        }, function(err) {
-          alert("error in retrieving shared style JSON");
-        });
+      console.log("requestUrl:", requestUrl);
+      var themeRequest = esriRequest({
+        url: requestUrl,
+        handleAs: "json"
       });
+      console.log(esri.config.defaults.io);
+      console.log(themeRequest);
+      themeRequest.then(
+        function(response) {
+          console.log("Success: ", response);
+          self.adjustSharedStyling(response);
+        },
+        function(error) {
+          console.log("Error: ", error.message);
+        });
+
     },
     adjustSharedStyling: function(data) {
       this.sharedStyling.title = (data.data.attributes.title ? data.data.attributes.title : this.sharedStyling.title);
