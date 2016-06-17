@@ -361,9 +361,9 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
     },
     adjustSharedStyling: function(data) {
-      this.sharedStyling.title = (data.attributes.title ? data.attributes.title : this.sharedStyling.title);
-      this.sharedStyling.colors[0] = (data.attributes.theme.body.bg ? data.attributes.theme.body.bg : this.sharedStyling.color);
-      this.sharedStyling.logo = (data.attributes.layout.header.component.settings.logoUrl ? data.attributes.layout.header.component.settings.logoUrl : this.sharedStyling.logo);
+      this.sharedStyling.title = data.attributes.title;
+      this.sharedStyling.colors[0] = data.attributes.theme.body.bg;
+      this.sharedStyling.logo = data.attributes.layout.header.component.settings.logoUrl;
       console.log("Adjusted sS Obj:", this.sharedStyling);
     },
     queryGroupItems: function(options) {
