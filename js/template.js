@@ -305,42 +305,53 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       return deferred.promise;
     },
-    getSharedStylingStatus: function(expression) {
-      switch (expression) {
-        case /\d+/.test(expression):
-          console.log("numbers");
-          break;
-        case "580":
-          console.log("case3");
-          break;
-        case "1":
-          console.log("case1");
-          break;
-        case "570":
-          console.log("case2");
-          break;
-        default:
-          console.log("default");
+    getSharedStylingStatus: function(input) {
+      var result = {};
+      if (/\d+/.test(input)) {
+        result.status = "siteId";
+        result.output = input;
+      } else if (input === "current") {
+        result.status = "domain";
+        result.output = window.location.href;
+        result.output = "http://data5-logotester2.dc.opendatadev.arcgis.com";
+      } else {
+        result.status = "standard";
+        result.output = "";
       }
-      // switch statement based on domain/site/current
-      //  against 3 regex, is all digits? (d+)
-      //  then host name
-      //  then use "current" (is it site="current"), return current url
+      return result;
+      // TODO determine means for extracting and searching by domain
     },
     getSharedStylingObject: function() {
       var self = this;
       var urlObj = self._createUrlParamsObject();
       theme = urlObj.query.theme;
+        console.log("themeInput:", theme);
+      var sharedStylingStatus = self.getSharedStylingStatus(theme);
+        console.log("sSS:", sharedStylingStatus);
+      var requestUrl;
+      switch (sharedStylingStatus.status) {
+        case "siteId":
+          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (sharedStylingStatus.output);
+          break;
+        case "domain":
+          requestUrl = sharedStylingStatus.output;
+          // https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=http://data5-logotester2.dc.opendatadev.arcgis.com
+          // take site and wack off the end
+          break;
+        case "standard":
 
-      console.log("theme:", theme);
+          // TODO remove this section
 
-      var sharedStylingStatus = self.getSharedStylingStatus("60");
+          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/";
+          break;
+        default:
+          console.log("other");
+      }
+      console.log("requestUrl:", requestUrl);
 
       // this code occurs earlier in stack resolution than ideal
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
 
-      var requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (theme ? theme : "");
-      console.log("requestUrl:", requestUrl);
       var themeRequest = esriRequest({
         url: requestUrl,
         handleAs: "json"
