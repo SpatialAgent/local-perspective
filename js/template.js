@@ -335,7 +335,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           break;
         case "domain":
           requestUrl = sharedStylingStatus.output;
-          // https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=http://data5-logotester2.dc.opendatadev.arcgis.com
+          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + sharedStylingStatus.output;
           // take site and wack off the end
           break;
         case "standard":
@@ -357,7 +357,18 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         handleAs: "json"
       });
       themeRequest.then(
+
         function(response) {
+          console.log(sharedStylingStatus.status);
+          if (sharedStylingStatus.status === "domain") {
+            console.log("responseBefore", response);
+            response = response.data[0];
+            console.log("responseAfter", response);
+          } else {
+            console.log("responseBefore", response);
+            response = response.data;
+            console.log("responseAfter", response);
+          }
           console.log("Success: ", response);
           self.adjustSharedStyling(response);
         },
@@ -366,9 +377,9 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         });
     },
     adjustSharedStyling: function(data) {
-      this.sharedStyling.title = (data.data.attributes.title ? data.data.attributes.title : this.sharedStyling.title);
-      this.sharedStyling.colors[0] = (data.data.attributes.theme.body.bg ? data.data.attributes.theme.body.bg : this.sharedStyling.color);
-      this.sharedStyling.logo = (data.data.attributes.layout.header.component.settings.logoUrl ? data.data.attributes.layout.header.component.settings.logoUrl : this.sharedStyling.logo);
+      this.sharedStyling.title = (data.attributes.title ? data.attributes.title : this.sharedStyling.title);
+      this.sharedStyling.colors[0] = (data.attributes.theme.body.bg ? data.attributes.theme.body.bg : this.sharedStyling.color);
+      this.sharedStyling.logo = (data.attributes.layout.header.component.settings.logoUrl ? data.attributes.layout.header.component.settings.logoUrl : this.sharedStyling.logo);
       console.log("Adjusted sS Obj:", this.sharedStyling);
     },
     queryGroupItems: function(options) {
