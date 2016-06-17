@@ -314,20 +314,16 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         result.status = "domain";
         result.output = window.location.href;
         result.output = "http://data5-logotester2.dc.opendatadev.arcgis.com";
-      } else {
-        result.status = "standard";
-        result.output = "";
       }
       return result;
-      // TODO determine means for extracting and searching by domain
     },
     getSharedStylingObject: function() {
       var self = this;
       var urlObj = self._createUrlParamsObject();
       theme = urlObj.query.theme;
-        console.log("themeInput:", theme);
+      console.log("themeInput:", theme);
       var sharedStylingStatus = self.getSharedStylingStatus(theme);
-        console.log("sSS:", sharedStylingStatus);
+      console.log("sSS:", sharedStylingStatus);
       var requestUrl;
       switch (sharedStylingStatus.status) {
         case "siteId":
@@ -338,43 +334,31 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + sharedStylingStatus.output;
           // take site and wack off the end
           break;
-        case "standard":
-
-          // TODO remove this section
-
-          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/";
-          break;
         default:
           console.log("other");
       }
       console.log("requestUrl:", requestUrl);
-
       // this code occurs earlier in stack resolution than ideal
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
-
-      var themeRequest = esriRequest({
-        url: requestUrl,
-        handleAs: "json"
-      });
-      themeRequest.then(
-
-        function(response) {
-          console.log(sharedStylingStatus.status);
-          if (sharedStylingStatus.status === "domain") {
-            console.log("responseBefore", response);
-            response = response.data[0];
-            console.log("responseAfter", response);
-          } else {
-            console.log("responseBefore", response);
-            response = response.data;
-            console.log("responseAfter", response);
-          }
-          console.log("Success: ", response);
-          self.adjustSharedStyling(response);
-        },
-        function(error) {
-          console.log("Error: ", error.message);
+      if (sharedStylingStatus.status === "domain" || sharedStylingStatus.status === "siteId") {
+        var themeRequest = esriRequest({
+          url: requestUrl,
+          handleAs: "json"
         });
+        themeRequest.then(
+          function(response) {
+            if (sharedStylingStatus.status === "domain") {
+              response = response.data[0];
+            } else {
+              response = response.data;
+            }
+            console.log("Success: ", response);
+            self.adjustSharedStyling(response);
+          },
+          function(error) {
+            console.log("Error: ", error.message);
+          });
+      }
     },
     adjustSharedStyling: function(data) {
       this.sharedStyling.title = (data.attributes.title ? data.attributes.title : this.sharedStyling.title);
