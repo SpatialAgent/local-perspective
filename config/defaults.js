@@ -1,4 +1,4 @@
-﻿/*global define,location */
+/*global define,location */
 /*jslint sloppy:true */
 /*
  | Copyright 2014 Esri
@@ -18,8 +18,8 @@
 define({
     //Default configuration settings for the application. This is where you'll define things like a bing maps key,
     //default web map, default app color theme and more. These values can be overwritten by template configuration settings and url parameters.
-    "appid": "4d06775fbd5a4ae5bffe34ce5b37255a",
-    "webmap": "4d06775fbd5a4ae5bffe34ce5b37255a", //"4ab11e3ebab04de6b04c42bbc102d3c0",
+    "appid": "",
+    "webmap": "9569a8b938c746359c1b4aa490476506", //"4ab11e3ebab04de6b04c42bbc102d3c0",
     "oauthappid": null, //"AFTKRmv16wj14N3z",
     //Group templates must support a group url parameter. This will contain the id of the group.
     //group: "",
