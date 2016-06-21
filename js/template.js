@@ -312,14 +312,16 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         result.output = input;
       } else if (input === "current") {
         result.status = "domain";
-        result.output = window.location.href;
-        result.output = "http://data5-logotester2.dc.opendatadev.arcgis.com";
+        result.output = window.location.href.split(/[?#]/)[0];
+        // result.output = "http://data5-logotester2.dc.opendatadev.arcgis.com";
+        console.log("result output:", result.output);
       }
       return result;
     },
     getSharedStylingObject: function() {
       var self = this;
       var urlObj = self._createUrlParamsObject();
+      console.log("urlObj:", urlObj);
       theme = urlObj.query.theme;
       console.log("themeInput:", theme);
       var sharedStylingStatus = self.getSharedStylingStatus(theme);
@@ -363,7 +365,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     adjustSharedStyling: function(data) {
       this.sharedStyling.title = data.attributes.title;
       this.sharedStyling.colors[0] = data.attributes.theme.body.bg;
-      this.sharedStyling.logo = data.attributes.layout.header.component.settings.logoUrl;
+      this.sharedStyling.logo = data.attributes.theme.logo.small;
       console.log("Adjusted sS Obj:", this.sharedStyling);
     },
     queryGroupItems: function(options) {
@@ -499,6 +501,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // to overwrite the application defaults.
       var deferred = new Deferred();
       if (this.config.appid) {
+        console.log("HERE!!");
+        console.log("this.config", this.config);
         arcgisUtils.getItem(this.config.appid).then(lang.hitch(this, function(response) {
           var cfg = {};
           if (response.item && response.itemData && response.itemData.values) {
