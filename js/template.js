@@ -357,7 +357,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       } else if (input === "current") {
         result.status = "domain";
         result.output = window.location.href.split(/[?#]/)[0];
-        // result.output = "http://data5-logotester2.dc.opendatadev.arcgis.com";
         console.log("result output:", result.output);
       }
       return result;
@@ -511,8 +510,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // to overwrite the application defaults.
       var deferred = new Deferred();
       if (this.config.appid) {
-        console.log("HERE!!");
-        console.log("this.config", this.config);
+        // add this.config to this.sharedStyling object
+        this.sharedStyling.appIdConfig = this.config;
         arcgisUtils.getItem(this.config.appid).then(lang.hitch(this, function(response) {
           var cfg = {};
           if (response.item && response.itemData && response.itemData.values) {
