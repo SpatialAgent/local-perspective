@@ -305,19 +305,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       return deferred.promise;
     },
-    getSharedStylingStatus: function(input) {
-      var result = {};
-      if (/\d+/.test(input)) {
-        result.status = "siteId";
-        result.output = input;
-      } else if (input === "current") {
-        result.status = "domain";
-        result.output = window.location.href.split(/[?#]/)[0];
-        // result.output = "http://data5-logotester2.dc.opendatadev.arcgis.com";
-        console.log("result output:", result.output);
-      }
-      return result;
-    },
     getSharedStylingObject: function() {
       var self = this;
       var urlObj = self._createUrlParamsObject();
@@ -362,12 +349,35 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           });
       }
     },
+    getSharedStylingStatus: function(input) {
+      var result = {};
+      if (/\d+/.test(input)) {
+        result.status = "siteId";
+        result.output = input;
+      } else if (input === "current") {
+        result.status = "domain";
+        result.output = window.location.href.split(/[?#]/)[0];
+        // result.output = "http://data5-logotester2.dc.opendatadev.arcgis.com";
+        console.log("result output:", result.output);
+      }
+      return result;
+    },
     adjustSharedStyling: function(data) {
       this.sharedStyling.title = data.attributes.title;
       this.sharedStyling.colors[0] = data.attributes.theme.body.bg;
       this.sharedStyling.logo = data.attributes.theme.logo.small;
       console.log("Adjusted sS Obj:", this.sharedStyling);
     },
+    // begin pseudocode functions
+    // if "?appid=###" exists, grab config values and apply
+      // ^this trigger already is in the code^, use to call a function (written below)
+      //
+    // check what config passes in
+      // if shared sharedStyling is selected
+      // is OD site identified manually (id or url)
+    // 1st level is OD site also identified in the URL
+    // -- how to prioritize the heirarchy
+
     queryGroupItems: function(options) {
       var deferred = new Deferred(),
         error, defaultParams, params;
