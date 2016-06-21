@@ -312,9 +312,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         result.output = input;
       } else if (input === "current") {
         result.status = "domain";
-        result.output = window.location.href.split(/[?#]/)[0];
-        // result.output = "http://data5-logotester2.dc.opendatadev.arcgis.com";
-        console.log("result output:", result.output);
+        result.output = window.location.href;
+        result.output = "http://data5-logotester2.dc.opendatadev.arcgis.com";
       }
       return result;
     },
@@ -364,7 +363,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     adjustSharedStyling: function(data) {
       this.sharedStyling.title = data.attributes.title;
       this.sharedStyling.colors[0] = data.attributes.theme.body.bg;
-      this.sharedStyling.logo = data.attributes.theme.logo.small;
+      this.sharedStyling.logo = data.attributes.layout.header.component.settings.logoUrl;
       console.log("Adjusted sS Obj:", this.sharedStyling);
     },
     queryGroupItems: function(options) {
