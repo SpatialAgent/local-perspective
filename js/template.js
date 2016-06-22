@@ -307,12 +307,12 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       return deferred.promise;
     },
-    generateRequestUrl: function (status) {
+    generateRequestUrl: function(status) {
       console.log("generateRequestUrl", status);
       var requestUrl;
       switch (status.status) {
         case "siteId":
-          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (status.output);
+          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + status.output;
           break;
         case "domain":
           requestUrl = status.output;
@@ -331,25 +331,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       var urlObj = self._createUrlParamsObject();
       var query = urlObj.query;
       var sharedStylingStatus = self.getSharedStylingStatus(query);
-
       var requestUrl = self.generateRequestUrl(sharedStylingStatus);
-      console.log(requestUrl);
-
-      // var requestUrl;
-      // switch (sharedStylingStatus.status) {
-      //   case "siteId":
-      //     requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (sharedStylingStatus.output);
-      //     break;
-      //   case "domain":
-      //     requestUrl = sharedStylingStatus.output;
-      //     requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + sharedStylingStatus.output;
-      //     break;
-      //   case "appId":
-      //     console.log("sharedStylingStatus.staus = appId");
-      //     break;
-      //   default:
-      //     console.log("other sharedStylingStatus.status");
-      // }
 
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
       if (sharedStylingStatus.status === "domain" || sharedStylingStatus.status === "siteId") {
@@ -365,38 +347,44 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
               response = response.data;
             }
             console.log("Domain/Site Success: ", response);
-            self.adjustSharedStyling(response);
+            self.adjustSharedStyling(response, sharedStylingStatus.status);
           },
           function(error) {
             console.log("Error: ", error.message);
           });
       } else if (sharedStylingStatus.status === "appId") {
-        this.sharedStyling.title = this.appConfig.title;
-        this.sharedStyling.colors[0] = this.appConfig.color;
-        this.sharedStyling.logo = this.appConfig.logo;
+        self.adjustSharedStyling(this.appConfig, sharedStylingStatus.status);
       }
     },
-    getSharedStylingStatus: function(input) {
-      console.log("gSSS input:", input);
+    getSharedStylingStatus: function(inputQuery) {
+      console.log("gSSS inputQuery:", inputQuery);
       var result = {};
-      if (/\d+/.test(input.theme)) {
+      if (/\d+/.test(inputQuery.theme)) {
         result.status = "siteId";
-        result.output = input.theme;
-      } else if (input.theme === "current") {
+        result.output = inputQuery.theme;
+      } else if (inputQuery.theme === "current") {
         result.status = "domain";
         // TODO fix domain call
         result.output = window.location.href.split(/[?#]/)[0];
-      } else if (input.appid) {
+      } else if (inputQuery.appid) {
         result.status = "appId";
         result.output = "";
       }
       console.log("gSSS result:", result);
       return result;
     },
-    adjustSharedStyling: function(data) {
-      this.sharedStyling.title = data.attributes.title;
-      this.sharedStyling.colors[0] = data.attributes.theme.body.bg;
-      this.sharedStyling.logo = data.attributes.theme.logo.small;
+    adjustSharedStyling: function(data, status) {
+      console.log("data", data);
+      console.log("status:", status);
+      if (status === "domain" || status === "siteId") {
+        this.sharedStyling.title = data.attributes.title;
+        this.sharedStyling.colors[0] = data.attributes.theme.body.bg;
+        this.sharedStyling.logo = data.attributes.theme.logo.small;
+      } else if (status === "appId") {
+        this.sharedStyling.title = data.title;
+        this.sharedStyling.colors[0] = data.color;
+        this.sharedStyling.logo = data.logo;
+      }
       console.log("Adjusted sS Obj:", this.sharedStyling);
     },
     // check what config passes in
@@ -404,10 +392,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     // is OD site identified manually (id or url)
     // 1st level is OD site also identified in the URL
     // -- how to prioritize the heirarchy
-
-    // implement hierarchy
-    // streamline code
-
     queryGroupItems: function(options) {
       var deferred = new Deferred(),
         error, defaultParams, params;
@@ -541,7 +525,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // to overwrite the application defaults.
       var deferred = new Deferred();
       if (this.config.appid) {
-          arcgisUtils.getItem(this.config.appid).then(lang.hitch(this, function(response) {
+        arcgisUtils.getItem(this.config.appid).then(lang.hitch(this, function(response) {
           var cfg = {};
           if (response.item && response.itemData && response.itemData.values) {
             // get app config values - we'll merge them with config later.
@@ -576,7 +560,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       } else {
         deferred.resolve();
       }
-        return deferred.promise;
+      return deferred.promise;
     },
     queryOrganization: function() {
       var deferred = new Deferred();
