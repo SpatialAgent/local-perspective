@@ -307,24 +307,50 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       return deferred.promise;
     },
+    generateRequestUrl: function (status) {
+      console.log("generateRequestUrl", status);
+      var requestUrl;
+      switch (status.status) {
+        case "siteId":
+          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (status.output);
+          break;
+        case "domain":
+          requestUrl = status.output;
+          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + status.output;
+          break;
+        case "appId":
+          console.log("sharedStylingStatus.staus = appId");
+          break;
+        default:
+          console.log("other sharedStylingStatus.status");
+      }
+      return requestUrl;
+    },
     getSharedStylingObject: function() {
       var self = this;
       var urlObj = self._createUrlParamsObject();
-      theme = urlObj.query.theme;
-      var sharedStylingStatus = self.getSharedStylingStatus(theme);
-      console.log("sSS:", sharedStylingStatus);
-      var requestUrl;
-      switch (sharedStylingStatus.status) {
-        case "siteId":
-          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (sharedStylingStatus.output);
-          break;
-        case "domain":
-          requestUrl = sharedStylingStatus.output;
-          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + sharedStylingStatus.output;
-          break;
-        default:
-          console.log("other");
-      }
+      var query = urlObj.query;
+      var sharedStylingStatus = self.getSharedStylingStatus(query);
+
+      var requestUrl = self.generateRequestUrl(sharedStylingStatus);
+      console.log(requestUrl);
+
+      // var requestUrl;
+      // switch (sharedStylingStatus.status) {
+      //   case "siteId":
+      //     requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + (sharedStylingStatus.output);
+      //     break;
+      //   case "domain":
+      //     requestUrl = sharedStylingStatus.output;
+      //     requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + sharedStylingStatus.output;
+      //     break;
+      //   case "appId":
+      //     console.log("sharedStylingStatus.staus = appId");
+      //     break;
+      //   default:
+      //     console.log("other sharedStylingStatus.status");
+      // }
+
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
       if (sharedStylingStatus.status === "domain" || sharedStylingStatus.status === "siteId") {
         var themeRequest = esriRequest({
@@ -344,24 +370,27 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           function(error) {
             console.log("Error: ", error.message);
           });
-      }
-      // for appId case
-      console.log("this.appConfig:", this.appConfig);
-      if (this.appConfig.appResponse) {
+      } else if (sharedStylingStatus.status === "appId") {
         this.sharedStyling.title = this.appConfig.title;
         this.sharedStyling.colors[0] = this.appConfig.color;
         this.sharedStyling.logo = this.appConfig.logo;
       }
     },
     getSharedStylingStatus: function(input) {
+      console.log("gSSS input:", input);
       var result = {};
-      if (/\d+/.test(input)) {
+      if (/\d+/.test(input.theme)) {
         result.status = "siteId";
-        result.output = input;
-      } else if (input === "current") {
+        result.output = input.theme;
+      } else if (input.theme === "current") {
         result.status = "domain";
+        // TODO fix domain call
         result.output = window.location.href.split(/[?#]/)[0];
+      } else if (input.appid) {
+        result.status = "appId";
+        result.output = "";
       }
+      console.log("gSSS result:", result);
       return result;
     },
     adjustSharedStyling: function(data) {
@@ -375,6 +404,9 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     // is OD site identified manually (id or url)
     // 1st level is OD site also identified in the URL
     // -- how to prioritize the heirarchy
+
+    // implement hierarchy
+    // streamline code
 
     queryGroupItems: function(options) {
       var deferred = new Deferred(),
