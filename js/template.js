@@ -321,12 +321,10 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         case "domain":
           requestUrl = sharedStylingStatus.output;
           requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + sharedStylingStatus.output;
-          // take site and wack off the end
           break;
         default:
           console.log("other");
       }
-      // this code occurs earlier in stack resolution than ideal
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
       if (sharedStylingStatus.status === "domain" || sharedStylingStatus.status === "siteId") {
         var themeRequest = esriRequest({
@@ -340,7 +338,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             } else {
               response = response.data;
             }
-            console.log("Success: ", response);
+            console.log("Domain/Site Success: ", response);
             self.adjustSharedStyling(response);
           },
           function(error) {
@@ -348,21 +346,11 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           });
       }
       // for appId case
-      console.log("this.sharedStyling111:", this.sharedStyling.appIdConfig);
-      if (this.sharedStyling.appIdConfig) {
-        var config = this.sharedStyling.appIdConfig;
-        console.log("ChangeBasedonAPP");
-        console.log("this.sharedStyling.appIdConfig", this.sharedStyling.appIdConfig);
-        console.log("this.sharedStyling.appIdConfig.color", this.sharedStyling.appIdConfig.color);
-
-        // debugger;
-
-        console.log("this.sharedStyling.appIdConfig.test1", this.sharedStyling.appIdConfig.test1);
-        console.log("this.sharedStyling.appIdConfig.appResponse", this.sharedStyling.appIdConfig.appResponse);
-
-        this.sharedStyling.title = config.theme.title;
-        this.sharedStyling.colors[0] = config.theme.color;
-        this.sharedStyling.logo = config.theme.logo;
+      console.log("this.appConfig:", this.appConfig);
+      if (this.appConfig) {
+        this.sharedStyling.title = this.appConfig.title;
+        this.sharedStyling.colors[0] = this.appConfig.color;
+        this.sharedStyling.logo = this.appConfig.logo;
       }
     },
     getSharedStylingStatus: function(input) {
@@ -525,14 +513,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // to overwrite the application defaults.
       var deferred = new Deferred();
       if (this.config.appid) {
-        // // add this.config to this.sharedStyling object
-        // this.sharedStyling.appIdConfig = this.config;
-        // console.log("2this.sharedStyling.appIdConfig:", this.sharedStyling.appIdConfig);
-        // console.log("2this.sharedStyling.appIdConfig.color", this.sharedStyling.appIdConfig.color);
-        // // debugger;
-        // console.log("2this.sharedStyling.appIdConfig.test1", this.sharedStyling.appIdConfig.test1);
-        // console.log("2this.sharedStyling.appIdConfig.appResponse", this.sharedStyling.appIdConfig.appResponse);
-        arcgisUtils.getItem(this.config.appid).then(lang.hitch(this, function(response) {
+          arcgisUtils.getItem(this.config.appid).then(lang.hitch(this, function(response) {
           var cfg = {};
           if (response.item && response.itemData && response.itemData.values) {
             // get app config values - we'll merge them with config later.
@@ -558,15 +539,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           }
           this.appConfig = cfg;
           deferred.resolve(cfg);
-          // TODO This is where to set the cfg
-          // add this.config to this.sharedStyling object
-          this.sharedStyling.appIdConfig = this.config;
-          console.log("3this.sharedStyling.appIdConfig:", this.sharedStyling.appIdConfig);
-          console.log("2this.sharedStyling.appIdConfig.color", this.sharedStyling.appIdConfig.color);
-          // debugger;
-          console.log("2this.sharedStyling.appIdConfig.test1", this.sharedStyling.appIdConfig.test1);
-          console.log("2this.sharedStyling.appIdConfig.appResponse", this.sharedStyling.appIdConfig.appResponse);
-
         }), function(error) {
           if (!error) {
             error = new Error("Error retrieving application configuration.");
