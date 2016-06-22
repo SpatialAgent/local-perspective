@@ -118,8 +118,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           portal: this._createPortal(),
           // get org data
           org: this.queryOrganization(),
-          // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
-          sS: this.getSharedStylingObject(),
         }).then(lang.hitch(this, function() {
           // mixin all new settings from org and app
           this._mixinAll();
@@ -131,7 +129,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             groupInfo: this.queryGroupInfo(),
             // group items
             groupItems: this.queryGroupItems(),
-            sS: this.getSharedStylingObject(),
           }).then(lang.hitch(this, function() {
             // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
             this.getSharedStylingObject();
@@ -316,12 +313,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       var query = urlObj.query;
       var sharedStylingStatus = self.getSharedStylingStatus(query);
       var requestUrl = self.generateRequestUrl(sharedStylingStatus);
-      console.log("requestUrl:", requestUrl);
-      console.log("sharedStylingStatus", sharedStylingStatus);
-      if (sharedStylingStatus.status === "appId2SiteId") {
-        console.log("siwtch to siteId!!");
-        sharedStylingStatus.status = "siteId";
-      }
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
       if (sharedStylingStatus.status === "domain" || sharedStylingStatus.status === "siteId") {
         var themeRequest = esriRequest({
@@ -355,18 +346,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       } else if (inputQuery.appid) {
         result.status = "appId";
         result.output = "";
-        console.log("appResponse:", this.config);
-        // debugger
-        if (this.config.appResponse) {
-          console.log("trueTRUE");
-          var sharedStylingStatusSiteId = this.config.appResponse.itemData.values.theme.siteId;
-          if (sharedStylingStatusSiteId) {
-            result.status = "appId2SiteId";
-            // requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + sharedStylingStatusSiteId;
-            result.output = sharedStylingStatusSiteId;
-            console.log(result);
-          }
-        }
       }
       return result;
     },
@@ -377,10 +356,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         case "siteId":
           requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + status.output;
           break;
-        case "appId2SiteId":
-          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + status.output;
-          break;
         case "domain":
+          requestUrl = status.output;
           requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + status.output;
           break;
         case "appId":
@@ -393,21 +370,13 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     },
     adjustSharedStyling: function(data, status) {
       if (status === "domain" || status === "siteId") {
-        console.log("data", data);
-        console.log("status", status);
-        console.log("pre", this.sharedStyling);
-        console.log("data", data);
         this.sharedStyling.title = data.attributes.title;
         this.sharedStyling.colors[0] = data.attributes.theme.body.bg;
         this.sharedStyling.logo = data.attributes.theme.logo.small;
-        console.log("post", this.sharedStyling);
       } else if (status === "appId") {
-        console.log("data0", data);
-        console.log("pre0", this.sharedStyling);
         this.sharedStyling.title = data.title;
         this.sharedStyling.colors[0] = data.color;
         this.sharedStyling.logo = data.logo;
-        console.log("post0", this.sharedStyling);
       }
       console.log("Adjusted sS Obj:", this.sharedStyling);
     },
