@@ -313,9 +313,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       var query = urlObj.query;
       var sharedStylingStatus = self.getSharedStylingStatus(query);
       var requestUrl = self.generateRequestUrl(sharedStylingStatus);
-      console.log("requestUrl:", requestUrl);
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
-      if (sharedStylingStatus.status === "domain" || sharedStylingStatus.status === "siteId" || sharedStylingStatus.status === "appId2SiteId") {
+      if (sharedStylingStatus.status === "domain" || sharedStylingStatus.status === "siteId") {
         var themeRequest = esriRequest({
           url: requestUrl,
           handleAs: "json"
@@ -347,19 +346,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       } else if (inputQuery.appid) {
         result.status = "appId";
         result.output = "";
-        console.log("appResponse:", this.config);
-        // debugger
-        console.log("");
-        if (this.config.appResponse) {
-          console.log("true");
-          var sharedStylingStatusSiteId = this.config.appResponse.itemData.values.theme.siteId;
-          if (sharedStylingStatusSiteId) {
-            result.status = "appId2SiteId";
-            // requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + sharedStylingStatusSiteId;
-            result.output = sharedStylingStatusSiteId;
-            console.log(result);
-          }
-        }
       }
       return result;
     },
@@ -370,15 +356,23 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         case "siteId":
           requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + status.output;
           break;
-        case "appId2SiteId":
-          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + status.output;
-          break;
         case "domain":
           requestUrl = status.output;
           requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + status.output;
           break;
         case "appId":
           console.log("sharedStylingStatus.status = appId");
+          console.log("appResponse:", this.config);
+          // debugger
+          console.log("");
+          if (this.config.appResponse) {
+            console.log("true");
+            var sharedStylingStatusSiteId = this.config.appResponse.itemData.values.theme.siteId;
+            if (sharedStylingStatusSiteId) {
+              requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + sharedStylingStatusSiteId;
+              console.log(requestUrl);
+            }
+          }
           break;
         default:
           console.log("other sharedStylingStatus.status");
