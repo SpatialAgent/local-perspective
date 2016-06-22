@@ -152,12 +152,7 @@
       "defaultDistance" : 3,
       "test1": 1,
       "test2": 2,
-      "theme" : {
-        "sharedStyling": true,
-        "siteId": null,
-        "title" : "Local Perspective - Test Config",
-        "logo" : "http://www.clipartkid.com/images/361/outline-of-black-bear-photos-good-pix-gallery-Zsf0di-clipart.jpg",
-        "color" : "#803030"
-      }
+      "sharedStyling": false,
+      "themeSiteId": null
    }
 }
