@@ -97,7 +97,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // (center, basemap, theme) are only here as examples and can be removed if you don't plan on
       // supporting additional url parameters in your application.
       this.customUrlConfig = this._getUrlParamValues(this.templateConfig.urlItems);
-
+      // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
+      this.customUrlConfig = this.getSharedStylingObject();
       // config defaults <- standard url params
       // we need the webmap, appid, group and oauthappid to query for the data
       this._mixinAll();
@@ -113,8 +114,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           i18n: this._queryLocalization(),
           // get application data
           app: this.queryApplication(),
-          // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
-          theme: this.getSharedStylingObject(),
           // creates a portal for the app if necessary (groups use them)
           portal: this._createPortal(),
           // get org data
@@ -308,9 +307,9 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     },
     getSharedStylingObject: function() {
       if (this.sharedStyling.config) {
-        console.log("THIS SHARED STYLING CONFIG", this.sharedStyling.appIdConfig);
+        console.log("THIS SHARED STYLING CONFIG", this.sharedStyling.config);
       }
-      console.log("THIS SHARED STYLING CONFIG", this.sharedStyling.appIdConfig);
+      console.log("THIS SHARED STYLING CONFIG", this.sharedStyling.config);
       var self = this;
       var urlObj = self._createUrlParamsObject();
       console.log("urlObj:", urlObj);
