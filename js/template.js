@@ -97,8 +97,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // (center, basemap, theme) are only here as examples and can be removed if you don't plan on
       // supporting additional url parameters in your application.
       this.customUrlConfig = this._getUrlParamValues(this.templateConfig.urlItems);
-      // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
-      this.customUrlConfig = this.getSharedStylingObject();
+
       // config defaults <- standard url params
       // we need the webmap, appid, group and oauthappid to query for the data
       this._mixinAll();
@@ -114,6 +113,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           i18n: this._queryLocalization(),
           // get application data
           app: this.queryApplication(),
+          // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
+          theme: this.getSharedStylingObject(),
           // creates a portal for the app if necessary (groups use them)
           portal: this._createPortal(),
           // get org data
@@ -306,15 +307,9 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       return deferred.promise;
     },
     getSharedStylingObject: function() {
-      if (this.sharedStyling.config) {
-        console.log("THIS SHARED STYLING CONFIG", this.sharedStyling.config);
-      }
-      console.log("THIS SHARED STYLING CONFIG", this.sharedStyling.config);
       var self = this;
       var urlObj = self._createUrlParamsObject();
-      console.log("urlObj:", urlObj);
       theme = urlObj.query.theme;
-      console.log("themeInput:", theme);
       var sharedStylingStatus = self.getSharedStylingStatus(theme);
       console.log("sSS:", sharedStylingStatus);
       var requestUrl;
@@ -330,7 +325,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         default:
           console.log("other");
       }
-      console.log("requestUrl:", requestUrl);
       // this code occurs earlier in stack resolution than ideal
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
       if (sharedStylingStatus.status === "domain" || sharedStylingStatus.status === "siteId") {
@@ -352,6 +346,23 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             console.log("Error: ", error.message);
           });
       }
+      // for appId case
+      // console.log("this.sharedStyling111:", this.sharedStyling);
+      if (this.sharedStyling.appIdConfig) {
+        // var config = this.sharedStyling.appIdConfig;
+        console.log("ChangeBasedonAPP");
+        console.log("this.sharedStyling.appIdConfig", this.sharedStyling.appIdConfig);
+        console.log("this.sharedStyling.appIdConfig.color", this.sharedStyling.appIdConfig.color);
+
+        // debugger;
+
+        console.log("this.sharedStyling.appIdConfig.test1", this.sharedStyling.appIdConfig.test1);
+        console.log("this.sharedStyling.appIdConfig.appResponse", this.sharedStyling.appIdConfig.appResponse);
+
+        // this.sharedStyling.title = config.title;
+        // this.sharedStyling.colors[0] = config.color;
+        // this.sharedStyling.logo = config.logo;
+      }
     },
     getSharedStylingStatus: function(input) {
       var result = {};
@@ -361,7 +372,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       } else if (input === "current") {
         result.status = "domain";
         result.output = window.location.href.split(/[?#]/)[0];
-        console.log("result output:", result.output);
       }
       return result;
     },
@@ -373,11 +383,11 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     },
     // begin pseudocode functions
     // if "?appid=###" exists, grab config values and apply
-      // ^this trigger already is in the code^, use to call a function (written below)
-      //
+    // ^this trigger already is in the code^, use to call a function (written below)
+    //
     // check what config passes in
-      // if shared sharedStyling is selected
-      // is OD site identified manually (id or url)
+    // if shared sharedStyling is selected
+    // is OD site identified manually (id or url)
     // 1st level is OD site also identified in the URL
     // -- how to prioritize the heirarchy
 
@@ -514,10 +524,13 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // to overwrite the application defaults.
       var deferred = new Deferred();
       if (this.config.appid) {
-        // add this.config to this.sharedStyling object
-        this.sharedStyling.appIdConfig = this.config;
-        console.log("this.sharedStyling", this.sharedStyling);
-
+        // // add this.config to this.sharedStyling object
+        // this.sharedStyling.appIdConfig = this.config;
+        // console.log("2this.sharedStyling.appIdConfig:", this.sharedStyling.appIdConfig);
+        // console.log("2this.sharedStyling.appIdConfig.color", this.sharedStyling.appIdConfig.color);
+        // // debugger;
+        // console.log("2this.sharedStyling.appIdConfig.test1", this.sharedStyling.appIdConfig.test1);
+        // console.log("2this.sharedStyling.appIdConfig.appResponse", this.sharedStyling.appIdConfig.appResponse);
         arcgisUtils.getItem(this.config.appid).then(lang.hitch(this, function(response) {
           var cfg = {};
           if (response.item && response.itemData && response.itemData.values) {
@@ -544,6 +557,15 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           }
           this.appConfig = cfg;
           deferred.resolve(cfg);
+          // TODO This is where to set the cfg
+          // add this.config to this.sharedStyling object
+          this.sharedStyling.appIdConfig = this.config;
+          console.log("3this.sharedStyling.appIdConfig:", this.sharedStyling.appIdConfig);
+          console.log("2this.sharedStyling.appIdConfig.color", this.sharedStyling.appIdConfig.color);
+          // debugger;
+          console.log("2this.sharedStyling.appIdConfig.test1", this.sharedStyling.appIdConfig.test1);
+          console.log("2this.sharedStyling.appIdConfig.appResponse", this.sharedStyling.appIdConfig.appResponse);
+
         }), function(error) {
           if (!error) {
             error = new Error("Error retrieving application configuration.");
@@ -553,7 +575,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       } else {
         deferred.resolve();
       }
-      return deferred.promise;
+        return deferred.promise;
     },
     queryOrganization: function() {
       var deferred = new Deferred();
