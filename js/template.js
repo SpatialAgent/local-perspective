@@ -97,7 +97,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // (center, basemap, theme) are only here as examples and can be removed if you don't plan on
       // supporting additional url parameters in your application.
       this.customUrlConfig = this._getUrlParamValues(this.templateConfig.urlItems);
-
+      // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
+      this.getSharedStylingObject();
       // config defaults <- standard url params
       // we need the webmap, appid, group and oauthappid to query for the data
       this._mixinAll();
@@ -349,7 +350,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // for appId case
       console.log("this.sharedStyling111:", this.sharedStyling.appIdConfig);
       if (this.sharedStyling.appIdConfig) {
-        // var config = this.sharedStyling.appIdConfig;
+        var config = this.sharedStyling.appIdConfig;
         console.log("ChangeBasedonAPP");
         console.log("this.sharedStyling.appIdConfig", this.sharedStyling.appIdConfig);
         console.log("this.sharedStyling.appIdConfig.color", this.sharedStyling.appIdConfig.color);
@@ -359,9 +360,9 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         console.log("this.sharedStyling.appIdConfig.test1", this.sharedStyling.appIdConfig.test1);
         console.log("this.sharedStyling.appIdConfig.appResponse", this.sharedStyling.appIdConfig.appResponse);
 
-        // this.sharedStyling.title = config.title;
-        // this.sharedStyling.colors[0] = config.color;
-        // this.sharedStyling.logo = config.logo;
+        this.sharedStyling.title = config.theme.title;
+        this.sharedStyling.colors[0] = config.theme.color;
+        this.sharedStyling.logo = config.theme.logo;
       }
     },
     getSharedStylingStatus: function(input) {
