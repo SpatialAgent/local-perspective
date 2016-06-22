@@ -113,8 +113,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           i18n: this._queryLocalization(),
           // get application data
           app: this.queryApplication(),
-          // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
-          theme: this.getSharedStylingObject(),
           // creates a portal for the app if necessary (groups use them)
           portal: this._createPortal(),
           // get org data
@@ -131,6 +129,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             // group items
             groupItems: this.queryGroupItems(),
           }).then(lang.hitch(this, function() {
+            // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
+            this.getSharedStylingObject();
             // mixin all new settings from item, group info and group items.
             this._mixinAll();
             // We have all we need, let's set up a few things
@@ -347,7 +347,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           });
       }
       // for appId case
-      // console.log("this.sharedStyling111:", this.sharedStyling);
+      console.log("this.sharedStyling111:", this.sharedStyling.appIdConfig);
       if (this.sharedStyling.appIdConfig) {
         // var config = this.sharedStyling.appIdConfig;
         console.log("ChangeBasedonAPP");
