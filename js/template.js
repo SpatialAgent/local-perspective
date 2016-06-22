@@ -307,34 +307,15 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       return deferred.promise;
     },
-    generateRequestUrl: function(status) {
-      console.log("generateRequestUrl", status);
-      var requestUrl;
-      switch (status.status) {
-        case "siteId":
-          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + status.output;
-          break;
-        case "domain":
-          requestUrl = status.output;
-          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + status.output;
-          break;
-        case "appId":
-          console.log("sharedStylingStatus.staus = appId");
-          break;
-        default:
-          console.log("other sharedStylingStatus.status");
-      }
-      return requestUrl;
-    },
     getSharedStylingObject: function() {
       var self = this;
       var urlObj = self._createUrlParamsObject();
       var query = urlObj.query;
       var sharedStylingStatus = self.getSharedStylingStatus(query);
       var requestUrl = self.generateRequestUrl(sharedStylingStatus);
-
+      console.log("requestUrl:", requestUrl);
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
-      if (sharedStylingStatus.status === "domain" || sharedStylingStatus.status === "siteId") {
+      if (sharedStylingStatus.status === "domain" || sharedStylingStatus.status === "siteId" || sharedStylingStatus.status === "appId2SiteId") {
         var themeRequest = esriRequest({
           url: requestUrl,
           handleAs: "json"
@@ -343,9 +324,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           function(response) {
             if (sharedStylingStatus.status === "domain") {
               response = response.data[0];
-            } else {
-              response = response.data;
-            }
+            } else {response = response.data;}
             console.log("Domain/Site Success: ", response);
             self.adjustSharedStyling(response, sharedStylingStatus.status);
           },
@@ -357,7 +336,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
     },
     getSharedStylingStatus: function(inputQuery) {
-      console.log("gSSS inputQuery:", inputQuery);
       var result = {};
       if (/\d+/.test(inputQuery.theme)) {
         result.status = "siteId";
@@ -369,13 +347,45 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       } else if (inputQuery.appid) {
         result.status = "appId";
         result.output = "";
+        console.log("appResponse:", this.config);
+        // debugger
+        console.log("");
+        if (this.config.appResponse) {
+          console.log("true");
+          var sharedStylingStatusSiteId = this.config.appResponse.itemData.values.theme.siteId;
+          if (sharedStylingStatusSiteId) {
+            result.status = "appId2SiteId";
+            // requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + sharedStylingStatusSiteId;
+            result.output = sharedStylingStatusSiteId;
+            console.log(result);
+          }
+        }
       }
-      console.log("gSSS result:", result);
       return result;
     },
+    generateRequestUrl: function(status) {
+      console.log("generateRequestUrl", status);
+      var requestUrl;
+      switch (status.status) {
+        case "siteId":
+          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + status.output;
+          break;
+        case "appId2SiteId":
+          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + status.output;
+          break;
+        case "domain":
+          requestUrl = status.output;
+          requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + status.output;
+          break;
+        case "appId":
+          console.log("sharedStylingStatus.status = appId");
+          break;
+        default:
+          console.log("other sharedStylingStatus.status");
+      }
+      return requestUrl;
+    },
     adjustSharedStyling: function(data, status) {
-      console.log("data", data);
-      console.log("status:", status);
       if (status === "domain" || status === "siteId") {
         this.sharedStyling.title = data.attributes.title;
         this.sharedStyling.colors[0] = data.attributes.theme.body.bg;
