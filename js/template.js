@@ -347,7 +347,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       // for appId case
       console.log("this.appConfig:", this.appConfig);
-      if (this.appConfig) {
+      if (this.appConfig.appResponse) {
         this.sharedStyling.title = this.appConfig.title;
         this.sharedStyling.colors[0] = this.appConfig.color;
         this.sharedStyling.logo = this.appConfig.logo;
@@ -370,10 +370,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       this.sharedStyling.logo = data.attributes.theme.logo.small;
       console.log("Adjusted sS Obj:", this.sharedStyling);
     },
-    // begin pseudocode functions
-    // if "?appid=###" exists, grab config values and apply
-    // ^this trigger already is in the code^, use to call a function (written below)
-    //
     // check what config passes in
     // if shared sharedStyling is selected
     // is OD site identified manually (id or url)
