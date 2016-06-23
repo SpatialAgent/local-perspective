@@ -39,10 +39,10 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
   array, declare, kernel, lang, Evented, Deferred, string, domClass, all, esriConfig, IdentityManager, esriLang, esriRequest, urlUtils, esriPortal, ArcGISOAuthInfo, arcgisUtils, GeometryService, defaults) {
   return declare([Evented], {
     sharedStyling: {
-      status: false,
-      colors: ["#737373"],
-      title: "Default App Name",
-      logo: "https://s-media-cache-ak0.pinimg.com/736x/62/d4/6a/62d46abb9d27ed8d5e5faf033e0c85ed.jpg"
+      // status: false,
+      // colors: ["#737373"],
+      // title: "Default App Name",
+      // logo: "https://s-media-cache-ak0.pinimg.com/736x/62/d4/6a/62d46abb9d27ed8d5e5faf033e0c85ed.jpg"
     },
     config: {},
     orgConfig: {},
@@ -130,11 +130,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             // group items
             groupItems: this.queryGroupItems(),
             // sharedStyling: this.querySharedStyling(),
-              // TODO incorporate this look, copy queryGroupInfo 
+              // TODO incorporate this look, copy queryGroupInfo
           }).then(lang.hitch(this, function() {
-
-            // bring back this.sharedStyling
-
             // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
             this.prepSharedStylingRequest();
               // have this contain conditional flow, w a deferred
@@ -178,7 +175,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             mix in all the settings we got!
             {} <- i18n <- organization <- application <- group info <- group items <- webmap <- custom url params <- standard url params.
             */
-      lang.mixin(this.config, this.i18nConfig, this.orgConfig, this.appConfig, this.groupInfoConfig, this.groupItemConfig, this.itemConfig, this.customUrlConfig, this.urlConfig);
+      lang.mixin(this.config, this.i18nConfig, this.orgConfig, this.appConfig, this.groupInfoConfig, this.groupItemConfig, this.itemConfig, this.customUrlConfig, this.urlConfig, this.sharedStyling);
     },
     _createPortal: function() {
       var deferred = new Deferred();
