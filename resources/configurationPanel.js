@@ -137,9 +137,9 @@
       }
    ],
    "values" : {
-      "title" : "[#3] Local Perspective - Test Config [no deployed url]",
-      "logo" : "http://images.clipartpanda.com/octopus-silhouette-KinBkzkiq.png",
-      "color" : "#009500",
+      "title" : "Local Perspective - Test Config",
+      "logo" : "http://www.clipartkid.com/images/361/outline-of-black-bear-photos-good-pix-gallery-Zsf0di-clipart.jpg",
+      "color" : "#803030",
       "cycleColors" : true,
       "defaultToCenter" : true,
       "showDemograpics" : true,
@@ -152,7 +152,7 @@
       "defaultDistance" : 3,
       "test1": 1,
       "test2": 2,
-      "sharedStyling": false,
+      "sharedStyling": true,
       "themeSiteId": 584
    }
 }

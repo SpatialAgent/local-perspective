@@ -335,6 +335,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       return deferred.promise;
     },
     getSharedStylingStatus: function(inputQuery) {
+      console.log("inputQuery", inputQuery);
       var result = {};
       if (/\d+/.test(inputQuery.theme)) {
         result.status = "siteId";
@@ -342,12 +343,21 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       } else if (inputQuery.theme === "current") {
         result.status = "domain";
         // TODO fix domain call
-          //urlOjb.path (-":8080/")
+        //urlOjb.path (-":8080/")
         result.output = window.location.href.split(/[?#]/)[0];
       } else if (inputQuery.appid) {
-        result.status = "appId";
-        result.output = "";
+        if (this.appConfig.sharedStyling !== false) {
+          if (this.appConfig.themeSite) {
+            inputQuery.status = "siteId";
+            inputQuery.theme = this.appConfig.themeSite;
+            result = this.getSharedStylingStatus(inputQuery);
+          }
+        } else {
+          result.status = "appId";
+          result.output = "";
+        }
       }
+      console.log("result:", result);
       return result;
     },
     generateRequestUrl: function(status) {
@@ -370,7 +380,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       var self = this;
       console.log("sSS:", sharedStylingStatus);
       var requestUrl = self.generateRequestUrl(sharedStylingStatus);
-
       var deferred = new Deferred();
       if (sharedStylingStatus.status === "siteId" || sharedStylingStatus.status === "domain") {
         var themeRequest = esriRequest({
