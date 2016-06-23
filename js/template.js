@@ -129,18 +129,11 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             groupInfo: this.queryGroupInfo(),
             // group items
             groupItems: this.queryGroupItems(),
-            // sharedStyling: this.querySharedStyling(),
-              // TODO incorporate this look, copy queryGroupInfo
+            // sharedStyling
+            sharedStyling: this.querySharedStyling(),
           }).then(lang.hitch(this, function() {
             // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
             this.prepSharedStylingRequest();
-              // have this contain conditional flow, w a deferred
-              // return a promise from here
-              // .then ( function () {
-
-              // }) on return (and another deffered.reject)
-              // if (siteId) {}
-
             // mixin all new settings from item, group info and group items.
             this._mixinAll();
             // We have all we need, let's set up a few things
@@ -326,10 +319,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       var urlObj = self._createUrlParamsObject();
       var query = urlObj.query;
       var sharedStylingStatus = self.getSharedStylingStatus(query);
-      console.log("config:", this.config);
-      console.log("this.config.appResponse", this.config.appResponse);
-      // debugger
-
       return self.getSharedStylingObject(sharedStylingStatus);
     },
     getSharedStylingObject: function(sharedStylingStatus) {
@@ -338,7 +327,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       var requestUrl = self.generateRequestUrl(sharedStylingStatus);
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
 
-      var def = new Deferred();
+      var deferred = new Deferred();
       if (true) {
         var themeRequest = esriRequest({
           url: requestUrl,
@@ -351,7 +340,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             } else {response = response.data;}
             console.log("Domain/Site Success: ", response);
             self.adjustSharedStyling(response, sharedStylingStatus.status);
-            def.resolve();
+            deferred.resolve();
           },
           function(error) {
             console.log("Error: ", error.message);
@@ -360,9 +349,9 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           // else if (sharedStylingStatus.status === "appId") {
           //   self.adjustSharedStyling(this.appConfig, sharedStylingStatus.status);
           // }
-          def.resolve();
+          deferred.resolve();
         }
-        return def.promise;
+      return deferred.promise;
 
       // adjust not this.sharedStyling, but this.appConfig
     },
@@ -417,7 +406,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       if (true /*this.templateConfig.queryForOrg*/) {
         //esriRequest
           //.then(lang.hitch(this, function(response) {
-
+        console.log("in qSS deferred statement");
+        deferred.resolve();
       } else {
         deferred.resolve();
       }
