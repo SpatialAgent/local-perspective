@@ -98,7 +98,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // supporting additional url parameters in your application.
       this.customUrlConfig = this._getUrlParamValues(this.templateConfig.urlItems);
       // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
-      this.getSharedStylingObject();
+      // this.prepSharedStylingRequest();
       // config defaults <- standard url params
       // we need the webmap, appid, group and oauthappid to query for the data
       this._mixinAll();
@@ -129,9 +129,21 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             groupInfo: this.queryGroupInfo(),
             // group items
             groupItems: this.queryGroupItems(),
+            // sharedStyling: this.querySharedStyling(),
+              // TODO incorporate this look, copy queryGroupInfo 
           }).then(lang.hitch(this, function() {
+
+            // bring back this.sharedStyling
+
             // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
-            this.getSharedStylingObject();
+            this.prepSharedStylingRequest();
+              // have this contain conditional flow, w a deferred
+              // return a promise from here
+              // .then ( function () {
+
+              // }) on return (and another deffered.reject)
+              // if (siteId) {}
+
             // mixin all new settings from item, group info and group items.
             this._mixinAll();
             // We have all we need, let's set up a few things
@@ -166,7 +178,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             mix in all the settings we got!
             {} <- i18n <- organization <- application <- group info <- group items <- webmap <- custom url params <- standard url params.
             */
-      lang.mixin(this.config, this.i18nConfig, this.orgConfig, this.appConfig, this.groupInfoConfig, this.groupItemConfig, this.itemConfig, this.customUrlConfig, this.urlConfig, this.sharedStyling);
+      lang.mixin(this.config, this.i18nConfig, this.orgConfig, this.appConfig, this.groupInfoConfig, this.groupItemConfig, this.itemConfig, this.customUrlConfig, this.urlConfig);
     },
     _createPortal: function() {
       var deferred = new Deferred();
@@ -307,14 +319,25 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       return deferred.promise;
     },
-    getSharedStylingObject: function() {
+    prepSharedStylingRequest: function () {
       var self = this;
       var urlObj = self._createUrlParamsObject();
       var query = urlObj.query;
       var sharedStylingStatus = self.getSharedStylingStatus(query);
+      console.log("config:", this.config);
+      console.log("this.config.appResponse", this.config.appResponse);
+      // debugger
+
+      return self.getSharedStylingObject(sharedStylingStatus);
+    },
+    getSharedStylingObject: function(sharedStylingStatus) {
+      var self = this;
+      console.log("sSS:", sharedStylingStatus);
       var requestUrl = self.generateRequestUrl(sharedStylingStatus);
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
-      if (sharedStylingStatus.status === "domain" || sharedStylingStatus.status === "siteId") {
+
+      var def = new Deferred();
+      if (true) {
         var themeRequest = esriRequest({
           url: requestUrl,
           handleAs: "json"
@@ -326,13 +349,20 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             } else {response = response.data;}
             console.log("Domain/Site Success: ", response);
             self.adjustSharedStyling(response, sharedStylingStatus.status);
+            def.resolve();
           },
           function(error) {
             console.log("Error: ", error.message);
           });
-      } else if (sharedStylingStatus.status === "appId") {
-        self.adjustSharedStyling(this.appConfig, sharedStylingStatus.status);
-      }
+        } else {
+          // else if (sharedStylingStatus.status === "appId") {
+          //   self.adjustSharedStyling(this.appConfig, sharedStylingStatus.status);
+          // }
+          def.resolve();
+        }
+        return def.promise;
+
+      // adjust not this.sharedStyling, but this.appConfig
     },
     getSharedStylingStatus: function(inputQuery) {
       var result = {};
@@ -370,9 +400,9 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     },
     adjustSharedStyling: function(data, status) {
       if (status === "domain" || status === "siteId") {
-        this.sharedStyling.title = data.attributes.title;
-        this.sharedStyling.colors[0] = data.attributes.theme.body.bg;
-        this.sharedStyling.logo = data.attributes.theme.logo.small;
+        this.config.title = data.attributes.title;
+        this.config.colors[0] = data.attributes.theme.body.bg;
+        this.config.logo = data.attributes.theme.logo.small;
       } else if (status === "appId") {
         this.sharedStyling.title = data.title;
         this.sharedStyling.colors[0] = data.color;
@@ -380,11 +410,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       console.log("Adjusted sS Obj:", this.sharedStyling);
     },
-    // check what config passes in
-    // if shared sharedStyling is selected
-    // is OD site identified manually (id or url)
-    // 1st level is OD site also identified in the URL
-    // -- how to prioritize the heirarchy
+
     queryGroupItems: function(options) {
       var deferred = new Deferred(),
         error, defaultParams, params;
