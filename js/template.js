@@ -128,9 +128,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             // group items
             groupItems: this.queryGroupItems(),
             // sharedStyling
-            // sharedStyling: this.querySharedStyling(),
-            // tester
-            sharedStt: this.prepSharedStylingRequest(),
+            sharedStyling: this.querySharedStyling(),
           }).then(lang.hitch(this, function() {
             // mixin all new settings from item, group info and group items.
             this._mixinAll();
@@ -246,6 +244,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         esriConfig.defaults.io.proxyUrl = this.config.proxyurl;
         esriConfig.defaults.io.alwaysUseProxy = false;
       }
+      // add opendatadev.arcgis.com to corsEnabledServers in config, to allow calls to v2 API
+      esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
     },
     _checkSignIn: function() {
       var deferred, signedIn, oAuthInfo;
@@ -312,18 +312,33 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     ///////  PRE   /////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
-    prepSharedStylingRequest: function() {
+    querySharedStyling: function() {
       var self = this;
       var urlObj = self._createUrlParamsObject();
+      console.log(urlObj);
       var query = urlObj.query;
       var sharedStylingStatus = self.getSharedStylingStatus(query);
       return self.getSharedStylingObject(sharedStylingStatus);
+    },
+    querySharedStyling1: function() {
+      var deferred = new Deferred();
+
+
+      if (true /*this.templateConfig.queryForOrg*/ ) {
+        //esriRequest
+        //.then(lang.hitch(this, function(response) {
+        console.log("in qSS deferred statement");
+        this.prepSharedStylingRequest();
+        deferred.resolve();
+      } else {
+        deferred.resolve();
+      }
+      return deferred.promise;
     },
     getSharedStylingObject: function(sharedStylingStatus) {
       var self = this;
       console.log("sSS:", sharedStylingStatus);
       var requestUrl = self.generateRequestUrl(sharedStylingStatus);
-      esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
 
       var deferred = new Deferred();
       if (sharedStylingStatus.status === "siteId" || sharedStylingStatus.status === "domain") {
@@ -343,19 +358,17 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             deferred.resolve();
           },
           function(error) {
-            console.log("Error: ", error.message);
+            console.log("Error in grabbing theme from devAPI: ", error.message);
           });
       } else if (sharedStylingStatus.status === "appId") {
-        console.log("here");
-        self.adjustSharedStyling(this.appConfig, sharedStylingStatus.status);
+        console.log("AppId Success:", self.appConfig);
+        self.adjustSharedStyling(self.appConfig, sharedStylingStatus.status);
         deferred.resolve();
       } else {
         console.log("no match");
         deferred.resolve();
       }
       return deferred.promise;
-
-      // adjust not this.sharedStyling, but this.appConfig
     },
     getSharedStylingStatus: function(inputQuery) {
       var result = {};
@@ -365,6 +378,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       } else if (inputQuery.theme === "current") {
         result.status = "domain";
         // TODO fix domain call
+          //urlOjb.path (-":8080/")
         result.output = window.location.href.split(/[?#]/)[0];
       } else if (inputQuery.appid) {
         result.status = "appId";
@@ -373,18 +387,15 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       return result;
     },
     generateRequestUrl: function(status) {
-      console.log("generateRequestUrl", status);
       var requestUrl;
       switch (status.status) {
         case "siteId":
           requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + status.output;
           break;
         case "domain":
-          requestUrl = status.output;
           requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + status.output;
           break;
         case "appId":
-          console.log("sharedStylingStatus.status = appId");
           break;
         default:
           console.log("other sharedStylingStatus.status");
@@ -396,26 +407,12 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         this.sharedStyling.title = data.attributes.title;
         this.sharedStyling.colors[0] = data.attributes.theme.body.bg;
         this.sharedStyling.logo = data.attributes.theme.logo.small;
-      }
-      else if (status === "appId") {
-        console.log("data:", data);
+      } else if (status === "appId") {
         this.sharedStyling.title = data.title;
         this.sharedStyling.colors[0] = data.color;
         this.sharedStyling.logo = data.logo;
       }
       console.log("Adjusted sS Obj:", this.sharedStyling);
-    },
-    querySharedStyling: function() {
-      var deferred = new Deferred();
-      if (true /*this.templateConfig.queryForOrg*/ ) {
-        //esriRequest
-        //.then(lang.hitch(this, function(response) {
-        console.log("in qSS deferred statement");
-        deferred.resolve();
-      } else {
-        deferred.resolve();
-      }
-      return deferred.promise;
     },
     /////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
