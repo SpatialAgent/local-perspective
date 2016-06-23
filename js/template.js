@@ -311,10 +311,10 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     },
     /////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
-  ///////  PRE   /////////////////////////////////////////////////////
+    ///////  PRE   /////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
-    prepSharedStylingRequest: function () {
+    prepSharedStylingRequest: function() {
       var self = this;
       var urlObj = self._createUrlParamsObject();
       var query = urlObj.query;
@@ -325,10 +325,11 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       var self = this;
       console.log("sSS:", sharedStylingStatus);
       var requestUrl = self.generateRequestUrl(sharedStylingStatus);
+      console.log("here000");
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
 
-      var deferred = new Deferred();
-      if (true) {
+      // var deferred = new Deferred();
+      if (false) {
         var themeRequest = esriRequest({
           url: requestUrl,
           handleAs: "json"
@@ -337,21 +338,25 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           function(response) {
             if (sharedStylingStatus.status === "domain") {
               response = response.data[0];
-            } else {response = response.data;}
+            } else {
+              response = response.data;
+            }
             console.log("Domain/Site Success: ", response);
             self.adjustSharedStyling(response, sharedStylingStatus.status);
-            deferred.resolve();
+            // deferred.resolve();
           },
           function(error) {
             console.log("Error: ", error.message);
           });
-        } else {
-          // else if (sharedStylingStatus.status === "appId") {
-          //   self.adjustSharedStyling(this.appConfig, sharedStylingStatus.status);
-          // }
-          deferred.resolve();
-        }
-      return deferred.promise;
+      } else if (sharedStylingStatus.status === "appID") {
+        console.log("here");
+        // self.adjustSharedStyling(this.appConfig, sharedStylingStatus.status);
+        // deferred.resolve();
+      } else {
+        console.log("no match");
+        // deferred.resolve();
+      }
+      // return deferred.promise;
 
       // adjust not this.sharedStyling, but this.appConfig
     },
@@ -401,11 +406,11 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       console.log("Adjusted sS Obj:", this.sharedStyling);
     },
-    querySharedStyling: function () {
+    querySharedStyling: function() {
       var deferred = new Deferred();
-      if (true /*this.templateConfig.queryForOrg*/) {
+      if (true /*this.templateConfig.queryForOrg*/ ) {
         //esriRequest
-          //.then(lang.hitch(this, function(response) {
+        //.then(lang.hitch(this, function(response) {
         console.log("in qSS deferred statement");
         deferred.resolve();
       } else {
@@ -415,7 +420,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     },
     /////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
-  ///////  POST  /////////////////////////////////////////////////////
+    ///////  POST  /////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
     queryGroupItems: function(options) {
