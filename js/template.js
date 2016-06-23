@@ -313,59 +313,23 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     /////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
     querySharedStyling: function() {
+      var deferred = new Deferred();
       var self = this;
       var urlObj = self._createUrlParamsObject();
-      console.log(urlObj);
+      console.log("urlObj0:", urlObj);
       var query = urlObj.query;
       var sharedStylingStatus = self.getSharedStylingStatus(query);
-      return self.getSharedStylingObject(sharedStylingStatus);
-    },
-    querySharedStyling1: function() {
-      var deferred = new Deferred();
-
+      console.log("sharedStylingStatus0:", sharedStylingStatus);
 
       if (true /*this.templateConfig.queryForOrg*/ ) {
         //esriRequest
         //.then(lang.hitch(this, function(response) {
-        console.log("in qSS deferred statement");
-        this.prepSharedStylingRequest();
-        deferred.resolve();
-      } else {
-        deferred.resolve();
-      }
-      return deferred.promise;
-    },
-    getSharedStylingObject: function(sharedStylingStatus) {
-      var self = this;
-      console.log("sSS:", sharedStylingStatus);
-      var requestUrl = self.generateRequestUrl(sharedStylingStatus);
 
-      var deferred = new Deferred();
-      if (sharedStylingStatus.status === "siteId" || sharedStylingStatus.status === "domain") {
-        var themeRequest = esriRequest({
-          url: requestUrl,
-          handleAs: "json"
-        });
-        themeRequest.then(
-          function(response) {
-            if (sharedStylingStatus.status === "domain") {
-              response = response.data[0];
-            } else {
-              response = response.data;
-            }
-            console.log("Domain/Site Success: ", response);
-            self.adjustSharedStyling(response, sharedStylingStatus.status);
-            deferred.resolve();
-          },
-          function(error) {
-            console.log("Error in grabbing theme from devAPI: ", error.message);
-          });
-      } else if (sharedStylingStatus.status === "appId") {
-        console.log("AppId Success:", self.appConfig);
-        self.adjustSharedStyling(self.appConfig, sharedStylingStatus.status);
-        deferred.resolve();
+        console.log("in qSS deferred statement");
+
+        return self.getSharedStylingObject(sharedStylingStatus);
+
       } else {
-        console.log("no match");
         deferred.resolve();
       }
       return deferred.promise;
@@ -401,6 +365,41 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           console.log("other sharedStylingStatus.status");
       }
       return requestUrl;
+    },
+    getSharedStylingObject: function(sharedStylingStatus) {
+      var self = this;
+      console.log("sSS:", sharedStylingStatus);
+      var requestUrl = self.generateRequestUrl(sharedStylingStatus);
+
+      var deferred = new Deferred();
+      if (sharedStylingStatus.status === "siteId" || sharedStylingStatus.status === "domain") {
+        var themeRequest = esriRequest({
+          url: requestUrl,
+          handleAs: "json"
+        });
+        themeRequest.then(
+          function(response) {
+            if (sharedStylingStatus.status === "domain") {
+              response = response.data[0];
+            } else {
+              response = response.data;
+            }
+            console.log("Domain/Site Success: ", response);
+            self.adjustSharedStyling(response, sharedStylingStatus.status);
+            deferred.resolve();
+          },
+          function(error) {
+            console.log("Error in grabbing theme from devAPI: ", error.message);
+          });
+      } else if (sharedStylingStatus.status === "appId") {
+        console.log("AppId Success:", self.appConfig);
+        self.adjustSharedStyling(self.appConfig, sharedStylingStatus.status);
+        deferred.resolve();
+      } else {
+        console.log("no match");
+        deferred.resolve();
+      }
+      return deferred.promise;
     },
     adjustSharedStyling: function(data, status) {
       if (status === "domain" || status === "siteId") {
