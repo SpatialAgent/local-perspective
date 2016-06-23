@@ -319,20 +319,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       console.log("urlObj0:", urlObj);
       var query = urlObj.query;
       var sharedStylingStatus = self.getSharedStylingStatus(query);
-      console.log("sharedStylingStatus0:", sharedStylingStatus);
-
-      if (true /*this.templateConfig.queryForOrg*/ ) {
-        //esriRequest
-        //.then(lang.hitch(this, function(response) {
-
-        console.log("in qSS deferred statement");
-
-        return self.getSharedStylingObject(sharedStylingStatus);
-
-      } else {
-        deferred.resolve();
-      }
-      return deferred.promise;
+      return self.getSharedStylingObject(sharedStylingStatus);
+      // return deferred.promise;
     },
     getSharedStylingStatus: function(inputQuery) {
       console.log("inputQuery", inputQuery);
@@ -342,12 +330,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         result.output = inputQuery.theme;
       } else if (inputQuery.theme === "current") {
         result.status = "domain";
-        // TODO fix domain call
-        //urlOjb.path (-":8080/")
-        // result.output = window.location.href.split(/[?#]/)[0];
-        // console.log("domain result.output:", result.output);
         result.output = location.protocol+'//'+location.hostname;
-        console.log("domain result.output2:", result.output);
       } else if (inputQuery.appid) {
         if (this.appConfig.sharedStyling !== false) {
           if (this.appConfig.themeSite) {

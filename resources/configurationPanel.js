@@ -140,6 +140,8 @@
       "title" : "Local Perspective - Test Config",
       "logo" : "http://www.clipartkid.com/images/361/outline-of-black-bear-photos-good-pix-gallery-Zsf0di-clipart.jpg",
       "color" : "#803030",
+      "sharedStyling": true,
+      "themeSiteId": 584,
       "cycleColors" : true,
       "defaultToCenter" : true,
       "showDemograpics" : true,
@@ -149,10 +151,6 @@
       "showDirections" : false,
       "distanceUnits" : "miles",
       "maxDistance" : 10,
-      "defaultDistance" : 3,
-      "test1": 1,
-      "test2": 2,
-      "sharedStyling": true,
-      "themeSiteId": 584
+      "defaultDistance" : 3
    }
 }
