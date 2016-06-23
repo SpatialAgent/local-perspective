@@ -39,10 +39,10 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
   array, declare, kernel, lang, Evented, Deferred, string, domClass, all, esriConfig, IdentityManager, esriLang, esriRequest, urlUtils, esriPortal, ArcGISOAuthInfo, arcgisUtils, GeometryService, defaults) {
   return declare([Evented], {
     sharedStyling: {
-      // status: false,
-      // colors: ["#737373"],
-      // title: "Default App Name",
-      // logo: "https://s-media-cache-ak0.pinimg.com/736x/62/d4/6a/62d46abb9d27ed8d5e5faf033e0c85ed.jpg"
+      status: false,
+      colors: ["#737373"],
+      title: "Default App Name",
+      logo: "https://s-media-cache-ak0.pinimg.com/736x/62/d4/6a/62d46abb9d27ed8d5e5faf033e0c85ed.jpg"
     },
     config: {},
     orgConfig: {},
@@ -97,8 +97,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       // (center, basemap, theme) are only here as examples and can be removed if you don't plan on
       // supporting additional url parameters in your application.
       this.customUrlConfig = this._getUrlParamValues(this.templateConfig.urlItems);
-      // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
-      // this.prepSharedStylingRequest();
       // config defaults <- standard url params
       // we need the webmap, appid, group and oauthappid to query for the data
       this._mixinAll();
@@ -130,10 +128,10 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             // group items
             groupItems: this.queryGroupItems(),
             // sharedStyling
-            sharedStyling: this.querySharedStyling(),
+            // sharedStyling: this.querySharedStyling(),
+            // tester
+            sharedStt: this.prepSharedStylingRequest(),
           }).then(lang.hitch(this, function() {
-            // retrieve Shared Styling JSON from appropriate parent theme (based on id#)
-            this.prepSharedStylingRequest();
             // mixin all new settings from item, group info and group items.
             this._mixinAll();
             // We have all we need, let's set up a few things
@@ -325,11 +323,10 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       var self = this;
       console.log("sSS:", sharedStylingStatus);
       var requestUrl = self.generateRequestUrl(sharedStylingStatus);
-      console.log("here000");
       esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
 
-      // var deferred = new Deferred();
-      if (false) {
+      var deferred = new Deferred();
+      if (sharedStylingStatus.status === "siteId" || sharedStylingStatus.status === "domain") {
         var themeRequest = esriRequest({
           url: requestUrl,
           handleAs: "json"
@@ -343,20 +340,20 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             }
             console.log("Domain/Site Success: ", response);
             self.adjustSharedStyling(response, sharedStylingStatus.status);
-            // deferred.resolve();
+            deferred.resolve();
           },
           function(error) {
             console.log("Error: ", error.message);
           });
-      } else if (sharedStylingStatus.status === "appID") {
+      } else if (sharedStylingStatus.status === "appId") {
         console.log("here");
-        // self.adjustSharedStyling(this.appConfig, sharedStylingStatus.status);
-        // deferred.resolve();
+        self.adjustSharedStyling(this.appConfig, sharedStylingStatus.status);
+        deferred.resolve();
       } else {
         console.log("no match");
-        // deferred.resolve();
+        deferred.resolve();
       }
-      // return deferred.promise;
+      return deferred.promise;
 
       // adjust not this.sharedStyling, but this.appConfig
     },
@@ -396,10 +393,12 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     },
     adjustSharedStyling: function(data, status) {
       if (status === "domain" || status === "siteId") {
-        this.config.title = data.attributes.title;
-        this.config.colors[0] = data.attributes.theme.body.bg;
-        this.config.logo = data.attributes.theme.logo.small;
-      } else if (status === "appId") {
+        this.sharedStyling.title = data.attributes.title;
+        this.sharedStyling.colors[0] = data.attributes.theme.body.bg;
+        this.sharedStyling.logo = data.attributes.theme.logo.small;
+      }
+      else if (status === "appId") {
+        console.log("data:", data);
         this.sharedStyling.title = data.title;
         this.sharedStyling.colors[0] = data.color;
         this.sharedStyling.logo = data.logo;
