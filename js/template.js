@@ -316,6 +316,11 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       return deferred.promise;
     },
+    /////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////
+  ///////  PRE   /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////
     prepSharedStylingRequest: function () {
       var self = this;
       var urlObj = self._createUrlParamsObject();
@@ -407,7 +412,22 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       console.log("Adjusted sS Obj:", this.sharedStyling);
     },
+    querySharedStyling: function () {
+      var deferred = new Deferred();
+      if (true /*this.templateConfig.queryForOrg*/) {
+        //esriRequest
+          //.then(lang.hitch(this, function(response) {
 
+      } else {
+        deferred.resolve();
+      }
+      return deferred.promise;
+    },
+    /////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////
+  ///////  POST  /////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////
     queryGroupItems: function(options) {
       var deferred = new Deferred(),
         error, defaultParams, params;
