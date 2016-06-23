@@ -344,7 +344,10 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         result.status = "domain";
         // TODO fix domain call
         //urlOjb.path (-":8080/")
-        result.output = window.location.href.split(/[?#]/)[0];
+        // result.output = window.location.href.split(/[?#]/)[0];
+        // console.log("domain result.output:", result.output);
+        result.output = location.protocol+'//'+location.hostname;
+        console.log("domain result.output2:", result.output);
       } else if (inputQuery.appid) {
         if (this.appConfig.sharedStyling !== false) {
           if (this.appConfig.themeSite) {
