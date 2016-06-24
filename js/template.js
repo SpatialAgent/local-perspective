@@ -34,8 +34,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
 
   "esri/tasks/GeometryService",
 
-  "config/defaults"
-], function(
+  "config/defaults"], function(
   array, declare, kernel, lang, Evented, Deferred, string, domClass, all, esriConfig, IdentityManager, esriLang, esriRequest, urlUtils, esriPortal, ArcGISOAuthInfo, arcgisUtils, GeometryService, defaults) {
   return declare([Evented], {
     sharedStyling: {
@@ -320,7 +319,6 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       var query = urlObj.query;
       var sharedStylingStatus = self.getSharedStylingStatus(query);
       return self.getSharedStylingObject(sharedStylingStatus);
-      // return deferred.promise;
     },
     getSharedStylingStatus: function(inputQuery) {
       console.log("inputQuery", inputQuery);
