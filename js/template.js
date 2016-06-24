@@ -37,11 +37,10 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
   "config/defaults"], function(
   array, declare, kernel, lang, Evented, Deferred, string, domClass, all, esriConfig, IdentityManager, esriLang, esriRequest, urlUtils, esriPortal, ArcGISOAuthInfo, arcgisUtils, GeometryService, defaults) {
   return declare([Evented], {
-    sharedStyling: {
-      status: false,
+    // sharedTheme object for mixinAll stack
+    sharedTheme: {
+      // colors needs existing default array value to allow for future overwrite based on theme value
       colors: ["#737373"],
-      title: "Default App Name",
-      logo: "https://s-media-cache-ak0.pinimg.com/736x/62/d4/6a/62d46abb9d27ed8d5e5faf033e0c85ed.jpg"
     },
     config: {},
     orgConfig: {},
@@ -126,8 +125,8 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             groupInfo: this.queryGroupInfo(),
             // group items
             groupItems: this.queryGroupItems(),
-            // sharedStyling
-            sharedStyling: this.querySharedStyling(),
+            // sharedTheme
+            sharedTheme: this.querySharedTheme(),
           }).then(lang.hitch(this, function() {
             // mixin all new settings from item, group info and group items.
             this._mixinAll();
@@ -163,7 +162,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
             mix in all the settings we got!
             {} <- i18n <- organization <- application <- group info <- group items <- webmap <- custom url params <- standard url params.
             */
-      lang.mixin(this.config, this.i18nConfig, this.orgConfig, this.appConfig, this.groupInfoConfig, this.groupItemConfig, this.itemConfig, this.customUrlConfig, this.urlConfig, this.sharedStyling);
+      lang.mixin(this.config, this.i18nConfig, this.orgConfig, this.appConfig, this.groupInfoConfig, this.groupItemConfig, this.itemConfig, this.customUrlConfig, this.urlConfig, this.sharedTheme);
     },
     _createPortal: function() {
       var deferred = new Deferred();
@@ -311,16 +310,16 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
     ///////  PRE   /////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
-    querySharedStyling: function() {
+    querySharedTheme: function() {
       var deferred = new Deferred();
       var self = this;
       var urlObj = self._createUrlParamsObject();
       console.log("urlObj0:", urlObj);
       var query = urlObj.query;
-      var sharedStylingStatus = self.getSharedStylingStatus(query);
-      return self.getSharedStylingObject(sharedStylingStatus);
+      var sharedThemeStatus = self.getSharedThemeStatus(query);
+      return self.getSharedThemeObject(sharedThemeStatus);
     },
-    getSharedStylingStatus: function(inputQuery) {
+    getSharedThemeStatus: function(inputQuery) {
       console.log("inputQuery", inputQuery);
       var result = {};
       if (/\d+/.test(inputQuery.theme)) {
@@ -330,11 +329,11 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         result.status = "domain";
         result.output = location.protocol+'//'+location.hostname;
       } else if (inputQuery.appid) {
-        if (this.appConfig.sharedStyling !== false) {
+        if (this.appConfig.sharedTheme !== false) {
           if (this.appConfig.themeSite) {
             inputQuery.status = "siteId";
             inputQuery.theme = this.appConfig.themeSite;
-            result = this.getSharedStylingStatus(inputQuery);
+            result = this.getSharedThemeStatus(inputQuery);
           }
         } else {
           result.status = "appId";
@@ -356,37 +355,37 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         case "appId":
           break;
         default:
-          console.log("other sharedStylingStatus.status");
+          console.log("other sharedThemeStatus.status");
       }
       return requestUrl;
     },
-    getSharedStylingObject: function(sharedStylingStatus) {
+    getSharedThemeObject: function(sharedThemeStatus) {
       var self = this;
-      console.log("sSS:", sharedStylingStatus);
-      var requestUrl = self.generateRequestUrl(sharedStylingStatus);
+      console.log("sSS:", sharedThemeStatus);
+      var requestUrl = self.generateRequestUrl(sharedThemeStatus);
       var deferred = new Deferred();
-      if (sharedStylingStatus.status === "siteId" || sharedStylingStatus.status === "domain") {
+      if (sharedThemeStatus.status === "siteId" || sharedThemeStatus.status === "domain") {
         var themeRequest = esriRequest({
           url: requestUrl,
           handleAs: "json"
         });
         themeRequest.then(
           function(response) {
-            if (sharedStylingStatus.status === "domain") {
+            if (sharedThemeStatus.status === "domain") {
               response = response.data[0];
             } else {
               response = response.data;
             }
             console.log("Domain/Site Success: ", response);
-            self.adjustSharedStyling(response, sharedStylingStatus.status);
+            self.adjustSharedTheme(response, sharedThemeStatus.status);
             deferred.resolve();
           },
           function(error) {
             console.log("Error in grabbing theme from devAPI: ", error.message);
           });
-      } else if (sharedStylingStatus.status === "appId") {
+      } else if (sharedThemeStatus.status === "appId") {
         console.log("AppId Success:", self.appConfig);
-        self.adjustSharedStyling(self.appConfig, sharedStylingStatus.status);
+        self.adjustSharedTheme(self.appConfig, sharedThemeStatus.status);
         deferred.resolve();
       } else {
         console.log("no match");
@@ -394,17 +393,17 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       }
       return deferred.promise;
     },
-    adjustSharedStyling: function(data, status) {
+    adjustSharedTheme: function(data, status) {
       if (status === "domain" || status === "siteId") {
-        this.sharedStyling.title = data.attributes.title;
-        this.sharedStyling.colors[0] = data.attributes.theme.body.bg;
-        this.sharedStyling.logo = data.attributes.theme.logo.small;
+        this.sharedTheme.title = data.attributes.title;
+        this.sharedTheme.colors[0] = data.attributes.theme.body.bg;
+        this.sharedTheme.logo = data.attributes.theme.logo.small;
       } else if (status === "appId") {
-        this.sharedStyling.title = data.title;
-        this.sharedStyling.colors[0] = data.color;
-        this.sharedStyling.logo = data.logo;
+        this.sharedTheme.title = data.title;
+        this.sharedTheme.colors[0] = data.color;
+        this.sharedTheme.logo = data.logo;
       }
-      console.log("Adjusted sS Obj:", this.sharedStyling);
+      console.log("Adjusted sS Obj:", this.sharedTheme);
     },
     /////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
