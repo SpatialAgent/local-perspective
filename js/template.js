@@ -113,7 +113,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
           // creates a portal for the app if necessary (groups use them)
           portal: this._createPortal(),
           // get org data
-          org: this.queryOrganization(),
+          org: this.queryOrganization()
         }).then(lang.hitch(this, function() {
           // mixin all new settings from org and app
           this._mixinAll();
@@ -145,11 +145,9 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       if (this.config.appid && this.config.application_extent && this.config.application_extent.length > 0 && this.config.itemInfo && this.config.itemInfo.item && this.config.itemInfo.item.extent) {
         this.config.itemInfo.item.extent = [
           [
-            parseFloat(this.config.application_extent[0][0]), parseFloat(this.config.application_extent[0][1])
-          ],
+            parseFloat(this.config.application_extent[0][0]), parseFloat(this.config.application_extent[0][1])],
           [
-            parseFloat(this.config.application_extent[1][0]), parseFloat(this.config.application_extent[1][1])
-          ]
+            parseFloat(this.config.application_extent[1][0]), parseFloat(this.config.application_extent[1][1])]
         ];
       }
       // Set the geometry helper service to be the app default.

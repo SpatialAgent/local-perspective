@@ -137,11 +137,9 @@
       }
    ],
    "values" : {
-      "title" : "Local Perspective - Test Config",
-      "logo" : "http://www.clipartkid.com/images/361/outline-of-black-bear-photos-good-pix-gallery-Zsf0di-clipart.jpg",
-      "color" : "#803030",
-      "sharedStyling": true,
-      "themeSiteId": 584,
+      "title" : "Local Perspective",
+      "logo" : "images/logo.png",
+      "color" : "#80ab00",
       "cycleColors" : true,
       "defaultToCenter" : true,
       "showDemograpics" : true,
