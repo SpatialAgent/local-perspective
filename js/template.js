@@ -304,21 +304,17 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       return deferred.promise;
     },
     /////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////
-    ///////  PRE   /////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////
+    ///////  PRE   //////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
     querySharedTheme: function() {
       var deferred = new Deferred();
       var self = this;
       var urlObj = self._createUrlParamsObject();
-      console.log("urlObj0:", urlObj);
       var query = urlObj.query;
       var sharedThemeStatus = self.getSharedThemeStatus(query);
       return self.getSharedThemeObject(sharedThemeStatus);
     },
     getSharedThemeStatus: function(inputQuery) {
-      console.log("inputQuery", inputQuery);
       var result = {};
       if (/\d+/.test(inputQuery.theme)) {
         result.status = "siteId";
@@ -353,15 +349,16 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         case "appId":
           break;
         default:
-          console.log("other sharedThemeStatus.status");
+          console.log("other status");
       }
       return requestUrl;
     },
     getSharedThemeObject: function(sharedThemeStatus) {
       var self = this;
-      console.log("sSS:", sharedThemeStatus);
+      console.log("status:", sharedThemeStatus);
       var requestUrl = self.generateRequestUrl(sharedThemeStatus);
       var deferred = new Deferred();
+      // if the status is either a siteId or domain lookup, make an external API call to opendatadev.arcgis.com
       if (sharedThemeStatus.status === "siteId" || sharedThemeStatus.status === "domain") {
         var themeRequest = esriRequest({
           url: requestUrl,
@@ -369,19 +366,22 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
         });
         themeRequest.then(
           function(response) {
+            // return for domain call is an array, so the call needs to be asjusted slightly
             if (sharedThemeStatus.status === "domain") {
               response = response.data[0];
             } else {
               response = response.data;
             }
             console.log("Domain/Site Success: ", response);
+            // adjust theme values based on response and status
             self.adjustSharedTheme(response, sharedThemeStatus.status);
             deferred.resolve();
           },
           function(error) {
             console.log("Error in grabbing theme from devAPI: ", error.message);
           });
-      } else if (sharedThemeStatus.status === "appId") {
+      } // if the status is "appId" then adjust theme values based on self.appConfig
+        else if (sharedThemeStatus.status === "appId") {
         console.log("AppId Success:", self.appConfig);
         self.adjustSharedTheme(self.appConfig, sharedThemeStatus.status);
         deferred.resolve();
@@ -392,6 +392,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       return deferred.promise;
     },
     adjustSharedTheme: function(data, status) {
+      // overwrite the title, color, and logo values based on the chosen data return
       if (status === "domain" || status === "siteId") {
         this.sharedTheme.title = data.attributes.title;
         this.sharedTheme.colors[0] = data.attributes.theme.body.bg;
@@ -404,9 +405,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/kernel", "dojo/_ba
       console.log("Adjusted sS Obj:", this.sharedTheme);
     },
     /////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////
-    ///////  POST  /////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////
+    ///////  POST  //////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
     queryGroupItems: function(options) {
       var deferred = new Deferred(),
