@@ -92,14 +92,14 @@ A copy of the license is available in the repository's license.txt file.
 # Shared Themes
 
 ### Concept
-The purpose of this forked repo is to streamline the process for developers to inherit styling from parent applications to child applications, and fulfill the shared-style component of hub-ready apps. An example app and attached docs will allow internal Esri developers (and eventually Citizens) to create hub-ready applications in terms of shared-styling, whether they are starting from scratch or looking to make an existing app hub-ready.
+The purpose of this forked repo is to streamline the process for developers to inherit theming from parent applications to child applications, and fulfill the shared-theme component of hub-ready apps. An example app and attached docs will allow internal Esri developers (and eventually Citizens) to create hub-ready applications in terms of shared-theming, whether they are starting from scratch or looking to make an existing app hub-ready.
 
 ### Walkthrough
 ---
 #### Observe the example site
 1. Clone this repo
 2. Run http-server from the directory (download http-server if you do not have it on your machine)
-  - Another option is to run “python -m SimpleHTTPServer 8000” from the directory with the index.html file (in this case, the "public" directory), which will spin up a basic http server running at 127.0.0.1:8000
+  - Another option is to run “python -m SimpleHTTPServer 8000” from the directory with the index.html file.
 3. Open up your locally hosted page and observe the example site, adding "/?theme=580".
 ```
 e.g. - http://127.0.0.1:8080/?theme=580
@@ -109,7 +109,7 @@ Working sites ids to use in the query string (http://127.0.0.1:8080/?theme=594)
 -	580
 -	594
 
-An additional option to adjust the mixed-in configuration include urls (against the open data v2 API). Working urls to use pre-query string (indicate use with ?theme=current) (http://data5-logotester2.dc.opendatadev.arcgis.com/?theme=current)
+An additional option to adjust the mixed-in configuration include urls (against the open data v2 API). Working urls to use pre-query string (indicate use with ?theme=current) 
 -	http://data5-logotester2.dc.opendatadev.arcgis.com/
 -	http://data5-logotester4.dc.opendatadev.arcgis.com/
 ```
