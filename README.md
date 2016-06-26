@@ -109,14 +109,14 @@ Working sites ids to use in the query string (http://127.0.0.1:8080/?theme=594)
 -	580
 -	594
 
-4. An additional option to adjust the mixed-in configuration include urls (against the open data v2 API). Working urls to use pre-query string (indicate use with ?theme=current) (http://data5-logotester2.dc.opendatadev.arcgis.com/?theme=current)
+An additional option to adjust the mixed-in configuration include urls (against the open data v2 API). Working urls to use pre-query string (indicate use with ?theme=current) (http://data5-logotester2.dc.opendatadev.arcgis.com/?theme=current)
 -	http://data5-logotester2.dc.opendatadev.arcgis.com/
 -	http://data5-logotester4.dc.opendatadev.arcgis.com/
 ```
 e.g. - http://data5-logotester4.dc.opendatadev.arcgis.com:8080/?theme=current
 ```
 
-5. Another option is adjust the config parameters of an existing application on ArcGIS Online. Working appIds (configs available for viewing in the Configuration Parameters section of the "settings" tab of the related appId)
+Another option is adjust the config parameters of an existing application on ArcGIS Online. Working appIds (configs available for viewing in the Configuration Parameters section of the "settings" tab of the related appId)
 
 ```
 e.g. - http://127.0.0.1:8080/?appid=06f0c9022dc6411598babb9cdbc768fc
