@@ -32,17 +32,17 @@ Route Utility Item: URL to route utility item (with stored credentials). *
 
 Distance Units: Choose this distance units (miles, kilometers or meters).
 
-Maximum Distance: Specify a maximum search distance. 
+Maximum Distance: Specify a maximum search distance.
 
-Default Distance: Specify a default search distance. 
+Default Distance: Specify a default search distance.
 
 
 #Instructions
 
-1. Download and unzip the .zip file or clone the repo. 
+1. Download and unzip the .zip file or clone the repo.
 2. Web-enable the directory
-3. Access the .html page 
-4. See the readme page for more details. 
+3. Access the .html page
+4. See the readme page for more details.
 
 
 #Deploying
@@ -63,19 +63,19 @@ Default Distance: Specify a default search distance.
 
 - Notepad or HTML editor
 - Some background with HTML, CSS and JavaScript
-- Experience with the ArcGIS API for JavaScript is helpful. 
+- Experience with the ArcGIS API for JavaScript is helpful.
 
 #Resources
 
 - [ArcGIS API for JavaScript Resource Center](http://help.arcgis.com/en/webapi/javascript/arcgis/index.html)
 
 #Issues
-Found a bug or want to request a new feature? Please let us know by submitting an issue. 
+Found a bug or want to request a new feature? Please let us know by submitting an issue.
 
 #Contributing
-Anyone and everyone is welcome to contribute. 
+Anyone and everyone is welcome to contribute.
 
-#Licensing 
+#Licensing
 
 Copyright 2014 Esri
 
@@ -86,5 +86,21 @@ http://www.apache.org/licenses/LICENSE-2.0
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 A copy of the license is available in the repository's license.txt file.
-[](Esri Tags: ArcGIS Online Web Application Templates) 
+[](Esri Tags: ArcGIS Online Web Application Templates)
 [](Esri Language: JavaScript)
+
+# Shared Themes
+
+http://127.0.0.1:8080/?theme=594
+
+Working sites ids to use in the query string (http://127.0.0.1:8080/?theme=594)
+-	580
+-	594
+Working urls to use pre-query string (indicate use with ?theme=current) (http://data5-logotester2.dc.opendatadev.arcgis.com/?theme=current)
+-	http://data5-logotester2.dc.opendatadev.arcgis.com/
+-	http://data5-logotester4.dc.opendatadev.arcgis.com/
+Working appIds (configs available for viewing in the Configuration Parameters section of the "settings" tab of the related appId)
+-	4d06775fbd5a4ae5bffe34ce5b37255a
+  - http://dcdev.maps.arcgis.com/home/item.html?id=4d06775fbd5a4ae5bffe34ce5b37255a#settings
+-	5aab4b150da3428289391ada56d7eaad
+-	06f0c9022dc6411598babb9cdbc768fc
