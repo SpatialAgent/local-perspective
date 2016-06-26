@@ -32,17 +32,17 @@ Route Utility Item: URL to route utility item (with stored credentials). *
 
 Distance Units: Choose this distance units (miles, kilometers or meters).
 
-Maximum Distance: Specify a maximum search distance. 
+Maximum Distance: Specify a maximum search distance.
 
-Default Distance: Specify a default search distance. 
+Default Distance: Specify a default search distance.
 
 
 #Instructions
 
-1. Download and unzip the .zip file or clone the repo. 
+1. Download and unzip the .zip file or clone the repo.
 2. Web-enable the directory
-3. Access the .html page 
-4. See the readme page for more details. 
+3. Access the .html page
+4. See the readme page for more details.
 
 
 #Deploying
@@ -63,19 +63,19 @@ Default Distance: Specify a default search distance.
 
 - Notepad or HTML editor
 - Some background with HTML, CSS and JavaScript
-- Experience with the ArcGIS API for JavaScript is helpful. 
+- Experience with the ArcGIS API for JavaScript is helpful.
 
 #Resources
 
 - [ArcGIS API for JavaScript Resource Center](http://help.arcgis.com/en/webapi/javascript/arcgis/index.html)
 
 #Issues
-Found a bug or want to request a new feature? Please let us know by submitting an issue. 
+Found a bug or want to request a new feature? Please let us know by submitting an issue.
 
 #Contributing
-Anyone and everyone is welcome to contribute. 
+Anyone and everyone is welcome to contribute.
 
-#Licensing 
+#Licensing
 
 Copyright 2014 Esri
 
@@ -86,5 +86,43 @@ http://www.apache.org/licenses/LICENSE-2.0
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 A copy of the license is available in the repository's license.txt file.
-[](Esri Tags: ArcGIS Online Web Application Templates) 
+[](Esri Tags: ArcGIS Online Web Application Templates)
 [](Esri Language: JavaScript)
+
+# Shared Themes
+
+### Concept
+The purpose of this forked repo is to streamline the process for developers to inherit theming from parent applications to child applications, and fulfill the shared-theme component of hub-ready apps. An example app and attached docs will allow internal Esri developers (and eventually Citizens) to create hub-ready applications in terms of shared-theming, whether they are starting from scratch or looking to make an existing app hub-ready.
+
+### Walkthrough
+---
+#### Observe the example site
+1. Clone this repo
+2. Run http-server from the directory (download http-server if you do not have it on your machine)
+  - Another option is to run “python -m SimpleHTTPServer 8000” from the directory with the index.html file.
+3. Open up your locally hosted page and observe the example site, adding "/?theme=580".
+```
+e.g. - http://127.0.0.1:8080/?theme=580
+```
+
+Working sites ids to use in the query string (http://127.0.0.1:8080/?theme=594)
+-	580
+-	594
+
+An additional option to adjust the mixed-in configuration include urls (against the open data v2 API). Working urls to use pre-query string (indicate use with ?theme=current) 
+-	http://data5-logotester2.dc.opendatadev.arcgis.com/
+-	http://data5-logotester4.dc.opendatadev.arcgis.com/
+```
+e.g. - http://data5-logotester4.dc.opendatadev.arcgis.com:8080/?theme=current
+```
+
+Another option is adjust the config parameters of an existing application on ArcGIS Online. Working appIds (configs available for viewing in the Configuration Parameters section of the "settings" tab of the related appId)
+
+```
+e.g. - http://127.0.0.1:8080/?appid=06f0c9022dc6411598babb9cdbc768fc
+```
+
+-	5aab4b150da3428289391ada56d7eaad
+-	06f0c9022dc6411598babb9cdbc768fc
+-	4d06775fbd5a4ae5bffe34ce5b37255a
+  - http://dcdev.maps.arcgis.com/home/item.html?id=4d06775fbd5a4ae5bffe34ce5b37255a#settings
