@@ -47,6 +47,7 @@ array, declare, kernel, lang, Evented, Deferred, string, domClass, all, esriConf
         itemConfig: {},
         customUrlConfig: {},
         commonUrlItems: ["webmap", "appid", "group", "oauthappid"],
+        sharedTheme: {},
         constructor: function (templateConfig) {
             // template settings
             var defaultTemplateConfig = {
@@ -120,6 +121,8 @@ array, declare, kernel, lang, Evented, Deferred, string, domClass, all, esriConf
                         groupInfo: this.queryGroupInfo(),
                         // group items
                         groupItems: this.queryGroupItems(),
+                        // shared theme
+                        sharedTheme: this.querySharedTheme(),
                     }).then(lang.hitch(this, function () {
                         // mixin all new settings from item, group info and group items.
                         this._mixinAll();
@@ -153,7 +156,7 @@ array, declare, kernel, lang, Evented, Deferred, string, domClass, all, esriConf
       mix in all the settings we got!
       {} <- i18n <- organization <- application <- group info <- group items <- webmap <- custom url params <- standard url params.
       */
-            lang.mixin(this.config, this.i18nConfig, this.orgConfig, this.appConfig, this.groupInfoConfig, this.groupItemConfig, this.itemConfig, this.customUrlConfig, this.urlConfig);
+            lang.mixin(this.config, this.i18nConfig, this.orgConfig, this.appConfig, this.groupInfoConfig, this.groupItemConfig, this.itemConfig, this.customUrlConfig, this.urlConfig, this.sharedTheme);
         },
         _createPortal: function () {
             var deferred = new Deferred();
@@ -233,6 +236,8 @@ array, declare, kernel, lang, Evented, Deferred, string, domClass, all, esriConf
                 esriConfig.defaults.io.proxyUrl = this.config.proxyurl;
                 esriConfig.defaults.io.alwaysUseProxy = false;
             }
+            // add opendatadev.arcgis.com to corsEnabledServers in config, to allow calls to v2 API
+            esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
         },
         _checkSignIn: function () {
             var deferred, signedIn, oAuthInfo;
@@ -293,6 +298,96 @@ array, declare, kernel, lang, Evented, Deferred, string, domClass, all, esriConf
                 deferred.resolve();
             }
             return deferred.promise;
+        },
+        querySharedTheme: function() {
+          var self = this;
+          var urlObj = self._createUrlParamsObject();
+          var query = urlObj.query;
+          var sharedThemeStatus = self.getSharedThemeStatus(query);
+          return self.getSharedThemeObject(sharedThemeStatus);
+        },
+        getSharedThemeStatus: function(inputQuery) {
+          var result = {};
+          if (/\d+/.test(inputQuery.theme)) {
+            result.status = "siteId";
+            result.output = inputQuery.theme;
+          } else if (inputQuery.theme === "current") {
+            result.status = "domain";
+            result.output = location.protocol+'//'+location.hostname;
+          } else if (inputQuery.appid) {
+            if (this.appConfig.sharedTheme !== false) {
+              if (this.appConfig.themeSite) {
+                inputQuery.status = "siteId";
+                inputQuery.theme = this.appConfig.themeSite;
+                result = this.getSharedThemeStatus(inputQuery);
+              }
+            } else {
+              result.status = "appId";
+              result.output = "";
+            }
+          }
+          return result;
+        },
+        generateRequestUrl: function(status) {
+          var requestUrl;
+          switch (status.status) {
+            case "siteId":
+              requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + status.output;
+              break;
+            case "domain":
+              requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + status.output;
+              break;
+            case "appId":
+              break;
+            default:
+          }
+          return requestUrl;
+        },
+        getSharedThemeObject: function(sharedThemeStatus) {
+          var self = this;
+          var requestUrl = self.generateRequestUrl(sharedThemeStatus);
+          var deferred = new Deferred();
+          // if the status is either a siteId or domain lookup, make an external API call to opendatadev.arcgis.com
+          if (sharedThemeStatus.status === "siteId" || sharedThemeStatus.status === "domain") {
+            var themeRequest = esriRequest({
+              url: requestUrl,
+              handleAs: "json"
+            });
+            themeRequest.then(
+              function(response) {
+                // return for domain call is an array, so the call needs to be asjusted slightly
+                if (sharedThemeStatus.status === "domain") {
+                  response = response.data[0];
+                } else {
+                  response = response.data;
+                }
+                // adjust theme values based on response and status
+                self.adjustSharedTheme(response, sharedThemeStatus.status);
+                deferred.resolve();
+              },
+              function(error) {
+              });
+          } // if the status is "appId" then adjust theme values based on self.appConfig
+            else if (sharedThemeStatus.status === "appId") {
+            self.adjustSharedTheme(self.appConfig, sharedThemeStatus.status);
+            deferred.resolve();
+          } else {
+            deferred.resolve();
+          }
+          return deferred.promise;
+        },
+        adjustSharedTheme: function(data, status) {
+          // overwrite the title, color, and logo values based on the chosen data return
+          if (status === "domain" || status === "siteId") {
+            this.sharedTheme.title = data.attributes.title;
+            this.sharedTheme.colors = [data.attributes.theme.body.bg];
+            this.sharedTheme.logo = data.attributes.theme.logo.small;
+          } else if (status === "appId") {
+            this.sharedTheme.title = data.title;
+            this.sharedTheme.colors = [data.color];
+            this.sharedTheme.logo = data.logo;
+          }
+          console.log("Adjusted shared theme object:", this.sharedTheme);
         },
         queryGroupItems: function (options) {
             var deferred = new Deferred(),
