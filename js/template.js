@@ -236,8 +236,8 @@ array, declare, kernel, lang, Evented, Deferred, string, domClass, all, esriConf
                 esriConfig.defaults.io.proxyUrl = this.config.proxyurl;
                 esriConfig.defaults.io.alwaysUseProxy = false;
             }
-            // add opendatadev.arcgis.com to corsEnabledServers in config, to allow calls to v2 API
-            esriConfig.defaults.io.corsEnabledServers.push("opendatadev.arcgis.com");
+            // add opendata.arcgis.com to corsEnabledServers in config, to allow calls to v2 API
+            esriConfig.defaults.io.corsEnabledServers.push("opendata.arcgis.com");
         },
         _checkSignIn: function () {
             var deferred, signedIn, oAuthInfo;
@@ -332,10 +332,10 @@ array, declare, kernel, lang, Evented, Deferred, string, domClass, all, esriConf
           var requestUrl;
           switch (status.status) {
             case "siteId":
-              requestUrl = "https://opendatadev.arcgis.com/api/v2/sites/" + status.output;
+              requestUrl = "https://opendata.arcgis.com/api/v2/sites/" + status.output;
               break;
             case "domain":
-              requestUrl = "https://opendatadev.arcgis.com/api/v2/sites?filter%5Burl%5D=" + status.output;
+              requestUrl = "https://opendata.arcgis.com/api/v2/sites?filter%5Burl%5D=" + status.output;
               break;
             case "appId":
               break;
