@@ -30,7 +30,8 @@
                "fieldName" : "logo",
                "label" : "Logo URL",
                "tooltip" : "Logo",
-               "placeHolder" : "Logo URL"
+               "placeHolder" : "Logo URL",
+               "sharedThemeProperty": "logo.small"
             },
             {
                "type":"paragraph",
@@ -40,7 +41,8 @@
                "type" : "color",
                "fieldName" : "color",
                "label" : "Color",
-               "tooltip" : "Color"
+               "tooltip" : "Color",
+               "sharedThemeProperty": "header.background"
             },
             {
                "type" : "boolean",

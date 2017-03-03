@@ -36,6 +36,7 @@ define([
     "dijit/form/HorizontalSlider",
     "dijit/registry",
     "esri/dijit/Directions",
+    "esri/geometry/geometryEngine",
     "esri/graphic",
     "esri/layers/GraphicsLayer",
     "esri/layers/WebTiledLayer",
@@ -74,6 +75,7 @@ define([
     HorizontalSlider,
     registry,
     Directions,
+    geometryEngine,
     Graphic,
     GraphicsLayer,
     WebTiledLayer,
@@ -539,6 +541,7 @@ define([
                 units = "esriKilometers";
             var options = {
                 map: this.map,
+                directionsLengthUnits: units,
                 routeParams: {
                     //directionsLanguage : userLang,
                     directionsLengthUnits: units
@@ -802,19 +805,27 @@ define([
                 dist = hs.value;
             }
             //dist = dist*1.1;
-            var params = new BufferParameters();
-            params.geometries = [this.location];
-            params.distances = [dist];
-            var units = GeometryService.UNIT_STATUTE_MILE;
-            if (this.config.distanceUnits == "kilometers")
-                units = GeometryService.UNIT_KILOMETER;
-            if (this.config.distanceUnits == "meters")
-                units = GeometryService.UNIT_METER;
-            params.unit = units;
-            params.bufferSpatialReference = this.map.spatialReference;
-            params.outSpatialReference = this.map.spatialReference;
-            var gsvc = new GeometryService(this.config.helperServices.geometry.url);
-            gsvc.buffer(params, lang.hitch(this, this._processBuffer));
+            // var params = new BufferParameters();
+            // params.geometries = [this.location];
+            // params.distances = [dist];
+            // var units = GeometryService.UNIT_STATUTE_MILE;
+            // if (this.config.distanceUnits == "kilometers")
+            //     units = GeometryService.UNIT_KILOMETER;
+            // if (this.config.distanceUnits == "meters")
+            //     units = GeometryService.UNIT_METER;
+            // params.unit = units;
+            // params.bufferSpatialReference = this.map.spatialReference;
+            // params.outSpatialReference = this.map.spatialReference;
+            // var gsvc = new GeometryService(this.config.helperServices.geometry.url);
+            //gsvc.buffer(params, lang.hitch(this, this._processBuffer));
+            var wkid = this.location.spatialReference.wkid;
+            var bufferGeom;
+            if (wkid === 4326 || wkid === 3857 || wkid === 102100) {
+                bufferGeom = geometryEngine.geodesicBuffer(this.location, dist, this.config.distanceUnits);
+            } else {
+                bufferGeom = geometryEngine.buffer(this.location, dist, this.config.distanceUnits);
+            }
+            this._processBuffer([bufferGeom]);
         },
 
         // process buffer

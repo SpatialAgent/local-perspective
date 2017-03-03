@@ -14,8 +14,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <!-- End Responsive -->
     <!-- Use protocol relative urls that way if the browser is viewing the page via HTTPS the js/css file will be requested using the HTTPS protocol -->
-    <link rel="stylesheet" href="//js.arcgis.com/3.17/dijit/themes/claro/claro.css">
-    <link rel="stylesheet" href="//js.arcgis.com/3.17/esri/css/esri.css">
+    <link rel="stylesheet" href="//js.arcgis.com/3.20/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="//js.arcgis.com/3.20/esri/css/esri.css">
     <!-- Load any application specific styles -->
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -39,7 +39,7 @@
     <div id="panelTop" class="bg rounded shadow">
         <!-- Panel Title -->
         <div id="panelTitle">
-            <div id="panelLogo"><img id="logo" src="images/logo.png" style="height:100%" alt="Logo" /></div>
+            <div id="panelLogo"><img id="logo" src="images/logo.png" style="max-width:100%; max-height:100%" alt="Logo" /></div>
             <div id="panelText">
                 Local Perspective
             </div>
@@ -71,7 +71,7 @@
         dojoConfig.locale = RegExp.$1;
     }
     </script>
-    <script type="text/javascript" src="//js.arcgis.com/3.17/"></script>
+    <script type="text/javascript" src="//js.arcgis.com/3.20/"></script>
     <script type="text/javascript">
     require([
         "config/templateConfig",
