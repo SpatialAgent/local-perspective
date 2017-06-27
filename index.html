@@ -4,8 +4,6 @@
 <head>
     <title>Local Perspective</title>
     <meta charset="utf-8">
-    <!-- Define the versions of IE that will be used to render the page. See Microsoft documentation for details. Optional. -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="fragment" content="!">
     <!-- Responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -14,8 +12,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <!-- End Responsive -->
     <!-- Use protocol relative urls that way if the browser is viewing the page via HTTPS the js/css file will be requested using the HTTPS protocol -->
-    <link rel="stylesheet" href="//js.arcgis.com/3.20/dijit/themes/claro/claro.css">
-    <link rel="stylesheet" href="//js.arcgis.com/3.20/esri/css/esri.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.21/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.21/esri/css/esri.css">
     <!-- Load any application specific styles -->
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -71,7 +69,7 @@
         dojoConfig.locale = RegExp.$1;
     }
     </script>
-    <script type="text/javascript" src="//js.arcgis.com/3.20/"></script>
+    <script type="text/javascript" src="https://js.arcgis.com/3.21/"></script>
     <script type="text/javascript">
     require([
         "config/templateConfig",

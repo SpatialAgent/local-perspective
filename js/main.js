@@ -78,7 +78,7 @@ define([
             // any url parameters and any application specific configuration information.
             if (config) {
                 this.config = config;
-                console.log(config);
+                //console.log(config);
                 this._setColor();
                 this._setProtocolHandler();
                 // proxy rules

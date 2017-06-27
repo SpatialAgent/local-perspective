@@ -10,7 +10,10 @@ define([
         'dojo/query',
         'dijit/layout/ContentPane',
         'dijit/registry',
-        'esri/geometry/mathUtils',
+        //'esri/geometry/mathUtils',
+        'esri/geometry/geometryEngine',
+        'esri/geometry/Polyline',
+        'esri/geometry/webMercatorUtils',
         'esri/tasks/query',
         'esri/tasks/QueryTask'
    ],function(
@@ -25,7 +28,10 @@ define([
         query,
         ContentPane,
         registry,
-        mathUtils,
+        //mathUtils,
+        geometryEngine,
+        Polyline,
+        webMercatorUtils,
         Query,
         QueryTask
 ){
@@ -224,11 +230,43 @@ define([
 
 
       // get distance
-      _getDistance : function(loc) {
+      // _getDistance : function(loc) {
+      //    var dist = 0;
+      //    dist = mathUtils.getLength(this.location, loc) * 0.000621371;
+      //    if (this.config.distanceUnits === "kilometers") {
+      //       dist = dist * 1.60934;
+      //    } else if (this.config.distanceUnits === "meters") {
+      //       dist = dist * 1609.34;
+      //    }
+      //    return dist;
+      // },
+
+      // get distance
+      _getDistance: function(geom1) {
          var dist = 0;
-         dist = mathUtils.getLength(this.location, loc) * 0.000621371;
-         if (this.config.distanceUnits == "kilometers")
-            dist = dist * 1.60934;
+         var geom2 = this.location;
+         if (geom1.spatialReference.wkid === 4326) {
+           geom1 = webMercatorUtils.geographicToWebMercator(geom1);
+         }
+         if (geom2.spatialReference.wkid === 4326) {
+           geom2 = webMercatorUtils.geographicToWebMercator(geom2);
+         }
+         var units = this.config.distanceUnits;
+         var geomLine = new Polyline(geom1.spatialReference);
+         geomLine.addPath([geom1, geom2]);
+         if (geom1.spatialReference.isWebMercator()) {
+           dist = geometryEngine.geodesicLength(geomLine, 9001);
+         } else {
+           dist = geometryEngine.planarLength(geomLine, 9001);
+         }
+         switch (units) {
+           case "miles":
+             dist *= 0.000621371;
+             break;
+           case "kilometers":
+             dist *= 0.001;
+             break;
+         }
          return dist;
       },
 

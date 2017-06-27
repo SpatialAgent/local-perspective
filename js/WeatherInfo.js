@@ -146,6 +146,7 @@ define([
     		    
       // results handler
       _resultsHandler: function(results) {
+         console.log(results);
          this.container.innerHTML = "";
          
          var content = domConstruct.create("div", {
@@ -231,8 +232,8 @@ define([
         // credits
         var txt = '<br/><span style="font-size:11px;color:#6e6e6e">Powered by<br/>' +
         '<a style="color:#6e6e6e;text-decoration:none" ' +
-        'href="http://www.worldweatheronline.com/" title="Free Weather API" target="_blank">' +
-        'World Weather Online</a></span>';
+        'href="https://darksky.net/poweredby/" title="Dark Sky" target="_blank">' +
+        'Dark Sky</a></span>';
         domConstruct.create("div", {
           innerHTML: txt
         }, content);
