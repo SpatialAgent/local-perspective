@@ -69,9 +69,10 @@ define([
 
       // query features
       _queryFeatures : function() {
+         // ST updated to fix Arcade expressions and domain issues
          var layer = this.pageObj.layer;
-         var url = layer.url + "?ts=" + new Date().getTime();
-         var queryTask = new QueryTask(url);
+         //var url = layer.url + "?ts=" + new Date().getTime();
+         //var queryTask = new QueryTask(url);
          var query = new Query();
          query.outFields = ["*"];
          query.returnGeometry = true;
@@ -79,7 +80,8 @@ define([
             query.where = this.pageObj.defExp;
          query.geometry = this.pageObj.buffer;
          query.spatialRelationship = Query.SPATIAL_REL_INTERSECTS;
-         queryTask.execute(query, lang.hitch(this, this._resultsHandler), lang.hitch(this, this._errorHandler));
+         //queryTask.execute(query, lang.hitch(this, this._resultsHandler), lang.hitch(this, this._errorHandler));
+         layer.queryFeatures(query, lang.hitch(this, this._resultsHandler), lang.hitch(this, this._errorHandler));
       },
 
       // filter features

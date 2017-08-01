@@ -296,6 +296,7 @@ define([
                 itemData: this.config.response.itemInfo.itemData
             });
             var searchOptions = searchSources.createOptions();
+            searchOptions.autoNavigate = false;
             this.search = new Search(searchOptions, "panelGeocoder");
 
             this.search.on("search-results", lang.hitch(this, function(event) {
