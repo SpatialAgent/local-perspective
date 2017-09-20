@@ -12,8 +12,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <!-- End Responsive -->
     <!-- Use protocol relative urls that way if the browser is viewing the page via HTTPS the js/css file will be requested using the HTTPS protocol -->
-    <link rel="stylesheet" href="https://js.arcgis.com/3.21/dijit/themes/claro/claro.css">
-    <link rel="stylesheet" href="https://js.arcgis.com/3.21/esri/css/esri.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.22/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.22/esri/css/esri.css">
     <!-- Load any application specific styles -->
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -52,9 +52,9 @@
     <script type="text/javascript">
     var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
     var dojoConfig = {
+        async: true,
         // The locationPath logic below may look confusing but all its doing is
         // enabling us to load the api from a CDN and load local modules from the correct location.
-        async: true,
         packages: [{
             name: "application",
             location: package_path + '/js'
@@ -70,7 +70,7 @@
         dojoConfig.locale = RegExp.$1;
     }
     </script>
-    <script type="text/javascript" src="https://js.arcgis.com/3.21/"></script>
+    <script type="text/javascript" src="https://js.arcgis.com/3.22/"></script>
     <script type="text/javascript">
     require([
         "config/templateConfig",
