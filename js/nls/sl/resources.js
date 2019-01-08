@@ -16,28 +16,28 @@
  */
 define({
   "map": {
-    "error": "Nije moguće stvoriti kartu",
+    "error": "Karte ni mogoče ustvariti",
     "licenseError": {
-      "message": "Vaš račun nije licenciran za upotrebu konfigurabilnih appova koji nisu javni. Obratite se administratoru svoje organizacije da vam dodijeli vrstu korisnika koja sadrži licencu za osnovne appove ili za dodatke za osnovne appove.",
-      "title": "Nema licence"
+      "message": "Vaš račun ni licenciran za uporabo konfigurabilnih aplikacij, ki niso javne. Prosite administratorja v vaši organizaciji, da vam dodeli tip uporabnika, ki vsebuje aplikacije Essential Apps ali licenco za dodatne aplikacije Essential Apps.",
+      "title": "Brez licence"
     }
   },
   "days": {
-    "now": "SADA",
+    "now": "ZDAJ",
     "sun": "NED",
     "mon": "PON",
-    "tue": "UTO",
-    "wed": "SRI",
+    "tue": "TOR",
+    "wed": "SRE",
     "thu": "ČET",
     "fri": "PET",
-    "sat": "SUB"
+    "sat": "SOB"
   },
   "tooltips": {
     "logo": "Logotip",
-    "menu": "Izbornik",
-    "close": "Zatvori",
-    "previous": "Prethodno",
-    "next": "Sljedeće",
-    "directions": "Upute"
+    "menu": "Meni",
+    "close": "Zapri",
+    "previous": "Prejšnji",
+    "next": "Naslednji",
+    "directions": "Navodila za pot"
   }
 });

@@ -75,6 +75,7 @@ define([
          //var queryTask = new QueryTask(url);
          var query = new Query();
          query.outFields = ["*"];
+         query.maxAllowableOffset = 0;
          query.returnGeometry = true;
          if (this.pageObj.defExp)
             query.where = this.pageObj.defExp;
@@ -183,7 +184,7 @@ define([
                   tip = this.config.i18n.tooltips.directions;
                }
                //if (geom.type == "point" && this.config.showDirections == true) {
-               if (this.config.showDirections === true) {
+               if (this.config.showDirections === true || this.config.showDirections === "true") {
                   var recRoute = domConstruct.create("div", {
                      title: tip
                   }, recHeader);

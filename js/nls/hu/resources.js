@@ -16,28 +16,28 @@
  */
 define({
   "map": {
-    "error": "Harita oluşturulamıyor",
+    "error": "Nem sikerült létrehozni a térképet",
     "licenseError": {
-      "message": "Hesabınız herkese açık olmayan Yapılandırılabilir Uygulamaları kullanmak için lisanslandırılmamış. Lütfen kuruluş yöneticinizden Temel Uygulamalar veya eklenti Temel Uygulamalar lisansı içeren bir kullanıcı türü atamasını isteyin.",
-      "title": "Lisanslı Değil"
+      "message": "Az Ön fiókjának licence nem terjed ki a nem nyilvános konfigurálható alkalmazásokra. Igényelje a szervezete adminisztrátorától, hogy rendeljen Önhöz olyan felhasználótípust, amely tartalmazza az alapvető alkalmazásokat, vagy egy kiegészítő alapvető alkalmazásokra vonatkozó licencet.",
+      "title": "Nincs licence"
     }
   },
   "days": {
-    "now": "ŞİMDİ",
-    "sun": "PAZ",
-    "mon": "PTS",
-    "tue": "SAL",
-    "wed": "ÇAR",
-    "thu": "PER",
-    "fri": "CUM",
-    "sat": "CTS"
+    "now": "MOST",
+    "sun": "V",
+    "mon": "H",
+    "tue": "K",
+    "wed": "SZE",
+    "thu": "CS",
+    "fri": "P",
+    "sat": "SZO"
   },
   "tooltips": {
-    "logo": "Logo",
+    "logo": "Logó",
     "menu": "Menü",
-    "close": "Kapat",
-    "previous": "Önceki",
-    "next": "Sonraki",
-    "directions": "Yol Tarifleri"
+    "close": "Bezárás",
+    "previous": "Előző",
+    "next": "Következő",
+    "directions": "Útvonalterv"
   }
 });
