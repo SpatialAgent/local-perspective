@@ -121,6 +121,7 @@ define([
         // startup
         startup: function() {
             var deferred = this._init();
+            this._scrollToPage(0);
             deferred.then(lang.hitch(this, function(config) {
                 // optional ready event to listen to
                 this.emit("ready", config);
@@ -138,8 +139,9 @@ define([
 
             deferred = new Deferred();
 
-            on(window, "scroll", lang.hitch(this, this._windowScrolled));
-            on(window, "resize", lang.hitch(this, this._windowScrolled));
+            // on(window, "scroll", lang.hitch(this, this._windowScrolled));
+            // on(window, "resize", lang.hitch(this, this._windowScrolled));
+            on(dom.byId("panelContent"), "scroll", lang.hitch(this, this._windowScrolled));
 
             // graphics layer click
             var gl = this.map.graphics;
@@ -612,8 +614,9 @@ define([
             if ((diff == 1) && (this.prevPage != 1)) {
                 this._animateScroll(startPos, endPos);
             } else {
-                document.body.scrollTop = endPos;
-                document.documentElement.scrollTop = endPos;
+                // document.body.scrollTop = endPos;
+                // document.documentElement.scrollTop = endPos;
+                dom.byId("panelContent").scrollTop = endPos;
                 if (this.map)
                     this.map.reposition();
                 this.snap = true;
@@ -642,7 +645,8 @@ define([
 
         // snap scroll
         _snapScroll: function() {
-            var startPos = domGeometry.docScroll().y;
+            //var startPos = domGeometry.docScroll().y;
+            var startPos = dom.byId("panelContent").scrollTop;
             var box = html.getContentBox(dom.byId("panelContent"));
             var numActual = startPos / box.h;
             var num = Math.round(numActual);
@@ -677,8 +681,9 @@ define([
                 curve: [start, end]
             });
             on(anim, "Animate", function(v) {
-                document.body.scrollTop = v;
-                document.documentElement.scrollTop = v;
+                // document.body.scrollTop = v;
+                // document.documentElement.scrollTop = v;
+                dom.byId("panelContent").scrollTop = v;
             });
             on(anim, "End", function() {
                 setTimeout(lang.hitch(me, me._resetSnap), 500);

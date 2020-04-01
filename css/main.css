@@ -428,6 +428,8 @@ a, a:hover, a:visited{
 	width: 320px;
 	height: 100%;
 	display: block;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 #panelPages {
@@ -908,7 +910,7 @@ a, a:hover, a:visited{
 	}
 	
 	.pageblank {
-		width: 100%;
+		width: 0px;
 		height: 100%;
 	}
 	
